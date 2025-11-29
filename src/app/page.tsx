@@ -2,7 +2,8 @@
 
 import { Box, Container, Typography } from '@mui/material';
 import ProductCarousel from '@/components/ProductCarousel';
-import { getFeaturedProducts } from '@/data/products';
+import ProductCard from '@/components/ProductCard';
+import { getFeaturedProducts, products } from '@/data/products';
 import { Smartphone } from '@mui/icons-material';
 
 export default function Home() {
@@ -95,6 +96,43 @@ export default function Home() {
         </Box>
 
         <ProductCarousel products={featuredProducts} />
+      </Container>
+
+      {/* All Products Section */}
+      <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 } }}>
+        <Box className="mb-8 text-center">
+          <Typography
+            variant="h2"
+            className="font-bold mb-3 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+            sx={{ fontSize: { xs: '2rem', md: '3rem' } }}
+          >
+            Todos los Productos
+          </Typography>
+          <Typography
+            variant="body1"
+            color="text.secondary"
+            className="max-w-2xl mx-auto"
+            sx={{ fontSize: { xs: '1rem', md: '1.125rem' } }}
+          >
+            Explora nuestra colección completa de iPhones disponibles
+          </Typography>
+        </Box>
+
+        <Box
+          className="grid gap-6"
+          sx={{
+            gridTemplateColumns: {
+              xs: '1fr',
+              sm: 'repeat(2, 1fr)',
+              md: 'repeat(3, 1fr)',
+              lg: 'repeat(4, 1fr)',
+            },
+          }}
+        >
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </Box>
       </Container>
 
       {/* Features Section */}
