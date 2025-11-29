@@ -54,6 +54,7 @@ export default function Home() {
               className="max-w-xl mx-auto text-slate-300"
               sx={{
                 fontSize: { xs: '0.9rem', md: '1rem' },
+                margin: '0 auto',
               }}
             >
               Encuentra el iPhone perfecto para ti. Garantía incluida y envío
