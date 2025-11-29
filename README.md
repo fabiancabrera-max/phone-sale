@@ -32,17 +32,20 @@ A modern, responsive e-commerce website for selling iPhones built with Next.js, 
 ### Installation
 
 1. Clone the repository
+
 ```bash
 git clone <your-repo-url>
 cd phone-sale
 ```
 
 2. Install dependencies
+
 ```bash
 npm install
 ```
 
 3. **Update contact information** in `src/config/contact.ts`:
+
 ```typescript
 export const contactConfig: ContactConfig = {
   whatsapp: {
@@ -61,10 +64,11 @@ export const contactConfig: ContactConfig = {
    The project currently uses placeholder images from `placehold.co`. To use your own product images:
 
    **Option A: Local Images (Recommended)**
+
    ```bash
    # Create images directory
    mkdir -p public/images
-   
+
    # Add your product images to public/images/
    # Then update src/data/products.ts with local paths:
    images: [
@@ -75,16 +79,18 @@ export const contactConfig: ContactConfig = {
    ```
 
    **Option B: External URLs**
+
    ```typescript
    // In src/data/products.ts, replace placeholder URLs with your image hosting URLs
    images: [
      'https://your-cdn.com/iphone-15-pro-max-1.jpg',
      'https://your-cdn.com/iphone-15-pro-max-2.jpg',
      // ... etc
-   ]
+   ];
    ```
 
 5. Start the development server
+
 ```bash
 npm run dev
 ```
@@ -136,10 +142,11 @@ phone-sale/
    - Each product needs 5 images (front, back, sides, camera detail, etc.)
 
 2. **Add images to your project**:
+
    ```bash
    # Create the images directory
    mkdir -p public/images
-   
+
    # Copy your images
    cp /path/to/your/images/* public/images/
    ```
@@ -189,6 +196,7 @@ Edit `src/data/products.ts` to add or modify products:
 ## Deployment
 
 > **⚠️ Important**: Before deploying to production, make sure to:
+>
 > - Replace all placeholder images with real product photos
 > - Update WhatsApp number and Instagram username in `src/config/contact.ts`
 > - Test all contact buttons and image galleries
@@ -203,6 +211,7 @@ Edit `src/data/products.ts` to add or modify products:
 ### Other Platforms
 
 Build the project:
+
 ```bash
 npm run build
 ```
@@ -210,6 +219,7 @@ npm run build
 The output will be in the `.next` folder. Follow your hosting provider's Next.js deployment guide.
 
 **Note**: If using external image hosting (Cloudinary, AWS S3, etc.), update `next.config.js` to allow those domains:
+
 ```javascript
 images: {
   domains: ['your-cdn-domain.com'],

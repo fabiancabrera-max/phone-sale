@@ -58,10 +58,11 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, title }) => {
           <Box
             key={index}
             onClick={() => setSelectedImage(index)}
-            className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden cursor-pointer transition-all ${index === selectedImage
+            className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden cursor-pointer transition-all ${
+              index === selectedImage
                 ? 'ring-4 ring-blue-500 scale-105'
                 : 'ring-2 ring-gray-200 hover:ring-gray-400'
-              }`}
+            }`}
           >
             <img
               src={image}
