@@ -4,6 +4,7 @@ import React from 'react';
 import { Product } from '@/types/product';
 import { Card, CardContent, CardMedia, Typography, Box } from '@mui/material';
 import Link from 'next/link';
+import { formatPrice } from '@/utils/formatters';
 
 interface ProductCardProps {
   product: Product;
@@ -71,7 +72,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               variant="h4"
               className="font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
             >
-              ${product.price}
+              {formatPrice(product.price)}
             </Typography>
             <Typography
               variant="body2"

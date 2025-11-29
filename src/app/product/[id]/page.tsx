@@ -15,6 +15,8 @@ import ImageGallery from '@/components/ImageGallery';
 import ContactButtons from '@/components/ContactButtons';
 import { getProductById } from '@/data/products';
 
+import { formatPrice } from '@/utils/formatters';
+
 export default function ProductDetail() {
   const params = useParams();
   const router = useRouter();
@@ -103,7 +105,7 @@ export default function ProductDetail() {
                   variant="h4"
                   className="font-bold mb-6 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
                 >
-                  ${product.price}
+                  {formatPrice(product.price)}
                 </Typography>
               </Box>
 
