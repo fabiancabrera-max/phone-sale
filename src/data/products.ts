@@ -9,9 +9,9 @@ export const products: Product[] = [
     price: 1299,
     images: [
       '/images/iphone-15-pro-max.png',
-      'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+15+Pro+Max+Back',
-      'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+15+Pro+Max+Side',
-      'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+15+Pro+Max+Camera',
+      '/images/iphone-15-pro-max-back.png',
+      '/images/iphone-15-pro-max-side.png',
+      '/images/iphone-15-pro-max-camera.png',
       'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+15+Pro+Max+Box',
     ],
     featured: true,
@@ -28,10 +28,10 @@ export const products: Product[] = [
       'Potencia profesional en un tamaño perfecto. Chip A17 Pro, sistema de cámaras pro y botón de acción personalizable. Diseño de titanio aeroespacial, resistente y ligero. La mejor experiencia iPhone en 6.1 pulgadas.',
     price: 1099,
     images: [
-      '/images/iphone-15-pro-max.png', // Reusing Pro Max image for Pro as they look similar
-      'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+15+Pro+Back',
-      'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+15+Pro+Side',
-      'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+15+Pro+Camera',
+      '/images/iphone-15-pro-max.png', // Reusing Pro Max image
+      '/images/iphone-15-pro-max-back.png', // Reusing Pro Max back
+      '/images/iphone-15-pro-max-side.png', // Reusing Pro Max side
+      '/images/iphone-15-pro-max-camera.png', // Reusing Pro Max camera
       'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+15+Pro+Box',
     ],
     featured: true,
@@ -49,9 +49,9 @@ export const products: Product[] = [
     price: 899,
     images: [
       '/images/iphone-15.png',
-      'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+15+Back',
-      'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+15+Side',
-      'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+15+Camera',
+      '/images/iphone-15-back.png',
+      '/images/iphone-15-side.png',
+      '/images/iphone-15-camera.png',
       'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+15+Box',
     ],
     featured: true,
@@ -68,10 +68,10 @@ export const products: Product[] = [
       'Una forma mágica de interactuar con tu iPhone. Dynamic Island, cámara de 48MP y pantalla siempre activa. Chip A16 Bionic. Batería para todo el día y detección de choques.',
     price: 1099,
     images: [
-      '/images/iphone-14-pro.png', // Reusing 14 Pro image for Pro Max
-      'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+14+Pro+Max+Back',
-      'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+14+Pro+Max+Side',
-      'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+14+Pro+Max+Camera',
+      '/images/iphone-14-pro.png', // Reusing 14 Pro image
+      '/images/iphone-14-pro-back.png',
+      '/images/iphone-14-pro-side.png', // Using substitute
+      '/images/iphone-14-pro-camera.png', // Using substitute
       'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+14+Pro+Max+Box',
     ],
     featured: true,
@@ -89,9 +89,9 @@ export const products: Product[] = [
     price: 999,
     images: [
       '/images/iphone-14-pro.png',
-      'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+14+Pro+Back',
-      'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+14+Pro+Side',
-      'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+14+Pro+Camera',
+      '/images/iphone-14-pro-back.png',
+      '/images/iphone-14-pro-side.png', // Using substitute
+      '/images/iphone-14-pro-camera.png', // Using substitute
       'https://placehold.co/800x800/e5e5e5/333333?text=iPhone+14+Pro+Box',
     ],
     featured: false,

@@ -53,15 +53,15 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images, title }) => {
       </Box>
 
       {/* Thumbnails */}
-      <Box className="flex gap-2 overflow-x-auto pb-2">
+      <Box className="flex gap-4 overflow-x-auto pb-2 px-1">
         {images.map((image, index) => (
           <Box
             key={index}
             onClick={() => setSelectedImage(index)}
-            className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden cursor-pointer transition-all ${
+            className={`flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden cursor-pointer transition-all duration-300 border-2 ${
               index === selectedImage
-                ? 'ring-4 ring-blue-500 scale-105'
-                : 'ring-2 ring-gray-200 hover:ring-gray-400'
+                ? 'border-slate-900 opacity-100 shadow-md'
+                : 'border-transparent opacity-50 hover:opacity-100 hover:border-slate-200'
             }`}
           >
             <img
