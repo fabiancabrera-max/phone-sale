@@ -39,28 +39,32 @@ export default function ProductDetail() {
   return (
     <Box className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
       <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8 } }}>
-        {/* Breadcrumbs */}
-        <Breadcrumbs className="mb-6">
-          <Link
-            href="/"
-            className="flex items-center gap-1 text-gray-600 hover:text-blue-600 transition-colors"
-          >
-            <Home fontSize="small" />
-            Inicio
-          </Link>
-          <Typography color="text.primary" className="font-semibold">
-            {product.title}
-          </Typography>
-        </Breadcrumbs>
+        {/* Breadcrumbs & Back Navigation */}
+        <Box className="flex items-center justify-between mb-6">
+          <Breadcrumbs>
+            <Link
+              href="/"
+              className="flex items-center gap-1 text-gray-600 hover:text-slate-900 transition-colors"
+            >
+              <Home fontSize="small" />
+              Inicio
+            </Link>
+            <Typography color="text.primary" className="font-semibold">
+              {product.title}
+            </Typography>
+          </Breadcrumbs>
 
-        {/* Back Button */}
-        <Box className="mb-6">
+          {/* Back Arrow Button */}
           <Link
             onClick={() => router.back()}
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 cursor-pointer font-semibold transition-colors"
+            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-900 hover:text-white cursor-pointer transition-all duration-300"
+            sx={{
+              '&:hover': {
+                transform: 'translateX(-4px)',
+              },
+            }}
           >
             <ArrowBack fontSize="small" />
-            Volver
           </Link>
         </Box>
 
@@ -167,12 +171,12 @@ export default function ProductDetail() {
               </Box>
 
               {/* Contact Buttons */}
-              <Box className="mt-auto pt-6">
+              <Box className="pt-4">
                 <Typography
                   variant="h6"
-                  className="font-bold mb-4 text-gray-900"
+                  className="pb-2 font-bold mb-4 text-gray-900"
                 >
-                  ¿Te interesa este producto?
+                  Si te interesa este producto puedes contactarme por:
                 </Typography>
                 <ContactButtons product={product} />
               </Box>

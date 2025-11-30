@@ -4,14 +4,17 @@ A modern, responsive e-commerce website for selling iPhones built with Next.js, 
 
 ## Features
 
-- 🎨 **Premium Design** - Modern UI with gradient backgrounds and smooth animations
-- 📱 **Fully Responsive** - Optimized for mobile, tablet, and desktop
-- 🖼️ **Product Carousel** - Auto-playing carousel with manual navigation
-- 🔍 **Product Details** - Detailed product pages with image galleries (5 images per product)
-- 💬 **Contact Integration** - WhatsApp and Instagram contact buttons
+- 🎨 **Premium Dark Design** - Modern UI with dark slate gradients and elegant aesthetics
+- 📱 **Fully Responsive** - Optimized for mobile, tablet, and desktop with adaptive layouts
+- 🖼️ **Product Carousel** - Auto-playing carousel with swipe support and manual navigation
+- 🔍 **Product Details** - Detailed product pages with interactive image galleries (5 images per product)
+- 💬 **Contact Integration** - WhatsApp and Instagram contact buttons with pre-filled messages
+- 🖼️ **Realistic Product Images** - High-quality generated images for iPhone 15 Pro Max, iPhone 15, and iPhone 14 Pro
+- 💰 **ARS Price Formatting** - Argentinian locale formatting (e.g., $ 1.299)
 - ⚡ **Fast Performance** - Built with Next.js for optimal performance
 - 🎯 **Type Safe** - Full TypeScript support
 - ✨ **Code Quality** - ESLint and Prettier configured
+- 🎨 **Custom Favicon** - Professional titanium-style favicon
 
 ## Tech Stack
 
@@ -51,7 +54,7 @@ export const contactConfig: ContactConfig = {
   whatsapp: {
     phoneNumber: 'YOUR_WHATSAPP_NUMBER', // Format: 5491112345678
     messageTemplate: (product) =>
-      `Hola! Estoy interesado en el ${product.title} - $${product.price}`,
+      `Hola! Estoy interesado en el ${product.title} - ${formatPrice(product.price)}`,
   },
   instagram: {
     username: 'YOUR_INSTAGRAM_USERNAME',
@@ -59,43 +62,13 @@ export const contactConfig: ContactConfig = {
 };
 ```
 
-4. **Replace placeholder images** (Important!):
-
-   The project currently uses placeholder images from `placehold.co`. To use your own product images:
-
-   **Option A: Local Images (Recommended)**
-
-   ```bash
-   # Create images directory
-   mkdir -p public/images
-
-   # Add your product images to public/images/
-   # Then update src/data/products.ts with local paths:
-   images: [
-     '/images/iphone-15-pro-max-1.jpg',
-     '/images/iphone-15-pro-max-2.jpg',
-     // ... etc
-   ]
-   ```
-
-   **Option B: External URLs**
-
-   ```typescript
-   // In src/data/products.ts, replace placeholder URLs with your image hosting URLs
-   images: [
-     'https://your-cdn.com/iphone-15-pro-max-1.jpg',
-     'https://your-cdn.com/iphone-15-pro-max-2.jpg',
-     // ... etc
-   ];
-   ```
-
-5. Start the development server
+4. Start the development server
 
 ```bash
 npm run dev
 ```
 
-6. Open [http://localhost:3000](http://localhost:3000) in your browser
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ## Available Scripts
 
@@ -112,60 +85,60 @@ npm run dev
 phone-sale/
 ├── src/
 │   ├── app/                    # Next.js app directory
+│   │   ├── icon.png           # Custom favicon
 │   │   ├── layout.tsx         # Root layout
-│   │   ├── page.tsx           # Home page
+│   │   ├── page.tsx           # Home page (Hero, Carousel, Grid)
 │   │   └── product/[id]/      # Product detail pages
 │   ├── components/            # React components
-│   │   ├── ProductCarousel.tsx
-│   │   ├── ProductCard.tsx
-│   │   ├── ImageGallery.tsx
-│   │   └── ContactButtons.tsx
+│   │   ├── ProductCarousel.tsx  # Responsive carousel with swipe
+│   │   ├── ProductCard.tsx      # Product card component
+│   │   ├── ImageGallery.tsx     # Image gallery with thumbnails
+│   │   └── ContactButtons.tsx   # WhatsApp/Instagram buttons
 │   ├── data/                  # Product data
+│   │   └── products.ts        # Product catalog
 │   ├── config/                # Configuration files
+│   │   └── contact.ts         # Contact information
 │   ├── theme/                 # Material-UI theme
+│   │   └── muiTheme.ts        # Custom theme configuration
+│   ├── utils/                 # Utility functions
+│   │   └── formatters.ts      # Price formatting (ARS locale)
 │   └── types/                 # TypeScript types
+│       └── product.ts         # Product type definitions
 ├── public/                    # Static files
+│   └── images/                # Product images
 └── Configuration files
 ```
 
+## Key Features Explained
+
+### Responsive Product Carousel
+
+The carousel adapts to different screen sizes:
+
+- **Mobile** (< 768px): 1 item, swipe navigation, dots only
+- **Tablet** (768px - 1024px): 2 items, navigation arrows
+- **Desktop** (> 1024px): 3 items, navigation arrows
+
+Touch swipe support is enabled on all devices for a native app-like experience.
+
+### Image Gallery
+
+Each product detail page features an interactive gallery with:
+
+- Main image display with navigation arrows
+- Thumbnail strip with elegant selection state (opacity + border)
+- Improved spacing between thumbnails (gap-4)
+- Smooth transitions and hover effects
+
+### Price Formatting
+
+All prices are displayed using Argentinian locale formatting:
+
+- Format: `$ 1.299` (dot as thousands separator)
+- Implemented via `Intl.NumberFormat` with `es-AR` locale
+- Consistent across all components (cards, detail pages, WhatsApp messages)
+
 ## Customization
-
-### Replacing Placeholder Images
-
-**Current Status**: The project uses placeholder images from `placehold.co` for demonstration purposes.
-
-**To use real product images:**
-
-1. **Prepare your images**:
-   - Recommended size: 800x800px or larger
-   - Format: JPG, PNG, or WebP
-   - Each product needs 5 images (front, back, sides, camera detail, etc.)
-
-2. **Add images to your project**:
-
-   ```bash
-   # Create the images directory
-   mkdir -p public/images
-
-   # Copy your images
-   cp /path/to/your/images/* public/images/
-   ```
-
-3. **Update product data** in `src/data/products.ts`:
-   ```typescript
-   {
-     id: '1',
-     title: 'iPhone 15 Pro Max',
-     images: [
-       '/images/iphone-15-pro-max-front.jpg',
-       '/images/iphone-15-pro-max-back.jpg',
-       '/images/iphone-15-pro-max-side.jpg',
-       '/images/iphone-15-pro-max-camera.jpg',
-       '/images/iphone-15-pro-max-box.jpg',
-     ],
-     // ... rest of product data
-   }
-   ```
 
 ### Adding or Modifying Products
 
@@ -177,15 +150,37 @@ Edit `src/data/products.ts` to add or modify products:
   title: 'iPhone Model',
   description: 'Product description',
   price: 999,
-  images: ['/images/img1.jpg', '/images/img2.jpg', ...], // 5 images
+  images: [
+    '/images/model-front.png',
+    '/images/model-back.png',
+    '/images/model-side.png',
+    '/images/model-camera.png',
+    '/images/model-box.png'
+  ],
   featured: true, // Show in carousel
   specs: {
     storage: '128GB',
     color: 'Blue',
-    condition: 'New',
+    condition: 'Nuevo',
   },
 }
 ```
+
+### Adding Product Images
+
+1. **Prepare your images**:
+   - Recommended size: 800x800px or larger
+   - Format: PNG, JPG, or WebP
+   - Each product should have 5 images (front, back, side, camera, box)
+
+2. **Add images to the project**:
+
+   ```bash
+   # Images go in public/images/
+   cp /path/to/your/images/* public/images/
+   ```
+
+3. **Update product data** in `src/data/products.ts` with the new image paths
 
 ### Styling
 
@@ -193,13 +188,15 @@ Edit `src/data/products.ts` to add or modify products:
 - **Material-UI theme**: `src/theme/muiTheme.ts`
 - **Tailwind config**: `tailwind.config.ts`
 
+Current color scheme uses dark slate gradients (`#0f172a` to `#334155`) for a premium, professional look.
+
 ## Deployment
 
 > **⚠️ Important**: Before deploying to production, make sure to:
 >
-> - Replace all placeholder images with real product photos
 > - Update WhatsApp number and Instagram username in `src/config/contact.ts`
 > - Test all contact buttons and image galleries
+> - Verify all product images are loading correctly
 
 ### Vercel (Recommended)
 
@@ -218,13 +215,14 @@ npm run build
 
 The output will be in the `.next` folder. Follow your hosting provider's Next.js deployment guide.
 
-**Note**: If using external image hosting (Cloudinary, AWS S3, etc.), update `next.config.js` to allow those domains:
+## Recent Updates
 
-```javascript
-images: {
-  domains: ['your-cdn-domain.com'],
-},
-```
+- ✅ Dark slate gradient hero section with reduced padding
+- ✅ Custom professional favicon (titanium style)
+- ✅ Generated realistic product images for main models
+- ✅ Improved image gallery styling (better spacing and selection)
+- ✅ ARS price formatting across all components
+- ✅ Enhanced responsive carousel with swipe support
 
 ## License
 

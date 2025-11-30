@@ -32,14 +32,15 @@ const ContactButtons: React.FC<ContactButtonsProps> = ({ product }) => {
         onClick={handleWhatsAppClick}
         className="flex-1 py-4 font-semibold text-lg shadow-lg hover:shadow-xl transition-all"
         sx={{
-          background: 'linear-gradient(135deg, #25D366 0%, #128C7E 100%)',
+          background: 'linear-gradient(135deg, #0f172a 0%, #10b981 100%)',
+          color: '#ffffff',
           '&:hover': {
-            background: 'linear-gradient(135deg, #20BA5A 0%, #0F7A6C 100%)',
+            background: 'linear-gradient(135deg, #1e293b 0%, #059669 100%)',
             transform: 'translateY(-2px)',
           },
         }}
       >
-        Contactar por WhatsApp
+        WhatsApp
       </Button>
 
       <Button
@@ -49,16 +50,15 @@ const ContactButtons: React.FC<ContactButtonsProps> = ({ product }) => {
         onClick={handleInstagramClick}
         className="flex-1 py-4 font-semibold text-lg shadow-lg hover:shadow-xl transition-all"
         sx={{
-          background:
-            'linear-gradient(135deg, #833AB4 0%, #FD1D1D 50%, #F77737 100%)',
+          background: 'linear-gradient(135deg, #0f172a 0%, #8b5cf6 100%)',
+          color: '#ffffff',
           '&:hover': {
-            background:
-              'linear-gradient(135deg, #6B2E94 0%, #D41818 50%, #D66530 100%)',
+            background: 'linear-gradient(135deg, #1e293b 0%, #7c3aed 100%)',
             transform: 'translateY(-2px)',
           },
         }}
       >
-        Ver en Instagram
+        Instagram
       </Button>
     </Box>
   );
