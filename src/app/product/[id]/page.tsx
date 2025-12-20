@@ -11,11 +11,11 @@ import {
   Paper,
 } from '@mui/material';
 import { ArrowBack, Home } from '@mui/icons-material';
-import ImageGallery from '@/components/ImageGallery';
-import ContactButtons from '@/components/ContactButtons';
-import { getProductById } from '@/data/products';
+import ImageGallery from '@/frontend/components/ImageGallery';
+import ContactButtons from '@/frontend/components/ContactButtons';
+import { getProductById } from '@/frontend/data/products';
 
-import { formatPrice } from '@/utils/formatters';
+import { formatPrice } from '@/frontend/utils/formatters';
 
 export default function ProductDetail() {
   const params = useParams();

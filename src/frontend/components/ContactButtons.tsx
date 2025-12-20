@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Product } from '@/types/product';
+import { Product } from '@/frontend/types/product';
 import { Box, Button } from '@mui/material';
 import { WhatsApp, Instagram } from '@mui/icons-material';
-import { contactConfig } from '@/config/contact';
+import { contactConfig } from '@/frontend/config/contact';
 
 interface ContactButtonsProps {
   product: Product;

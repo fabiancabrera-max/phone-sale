@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Product } from '@/types/product';
+import { Product } from '@/frontend/types/product';
 import { Box, IconButton, useTheme, useMediaQuery } from '@mui/material';
 import { ChevronLeft, ChevronRight } from '@mui/icons-material';
 import ProductCard from './ProductCard';
@@ -153,11 +153,10 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ products }) => {
           <Box
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`h-2 rounded-full cursor-pointer transition-all duration-300 ${
-              index === currentIndex
+            className={`h-2 rounded-full cursor-pointer transition-all duration-300 ${index === currentIndex
                 ? 'bg-primary-500 w-8'
                 : 'bg-gray-300 hover:bg-gray-400 w-2'
-            }`}
+              }`}
           />
         ))}
       </Box>

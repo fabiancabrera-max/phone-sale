@@ -1,5 +1,5 @@
-import { ContactConfig } from '@/types/product';
-import { formatPrice } from '@/utils/formatters';
+import { ContactConfig } from '@/frontend/types/product';
+import { formatPrice } from '@/frontend/utils/formatters';
 
 export const contactConfig: ContactConfig = {
   whatsapp: {

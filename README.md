@@ -47,7 +47,7 @@ cd phone-sale
 npm install
 ```
 
-3. **Update contact information** in `src/config/contact.ts`:
+3. **Update contact information** in `src/frontend/config/contact.ts`:
 
 ```typescript
 export const contactConfig: ContactConfig = {
@@ -84,30 +84,37 @@ npm run dev
 ```
 phone-sale/
 ├── src/
-│   ├── app/                    # Next.js app directory
-│   │   ├── icon.png           # Custom favicon
-│   │   ├── layout.tsx         # Root layout
-│   │   ├── page.tsx           # Home page (Hero, Carousel, Grid)
-│   │   └── product/[id]/      # Product detail pages
-│   ├── components/            # React components
-│   │   ├── ProductCarousel.tsx  # Responsive carousel with swipe
-│   │   ├── ProductCard.tsx      # Product card component
-│   │   ├── ImageGallery.tsx     # Image gallery with thumbnails
-│   │   └── ContactButtons.tsx   # WhatsApp/Instagram buttons
-│   ├── data/                  # Product data
-│   │   └── products.ts        # Product catalog
-│   ├── config/                # Configuration files
-│   │   └── contact.ts         # Contact information
-│   ├── theme/                 # Material-UI theme
-│   │   └── muiTheme.ts        # Custom theme configuration
-│   ├── utils/                 # Utility functions
-│   │   └── formatters.ts      # Price formatting (ARS locale)
-│   └── types/                 # TypeScript types
-│       └── product.ts         # Product type definitions
+│   ├── frontend/              # Frontend application
+│   │   ├── app/               # Next.js app directory
+│   │   │   ├── icon.png       # Custom favicon
+│   │   │   ├── layout.tsx     # Root layout
+│   │   │   ├── page.tsx       # Home page (Hero, Carousel, Grid)
+│   │   │   └── product/[id]/  # Product detail pages
+│   │   ├── components/        # React components
+│   │   │   ├── ProductCarousel.tsx  # Responsive carousel with swipe
+│   │   │   ├── ProductCard.tsx      # Product card component
+│   │   │   ├── ImageGallery.tsx     # Image gallery with thumbnails
+│   │   │   └── ContactButtons.tsx   # WhatsApp/Instagram buttons
+│   │   ├── data/              # Product data (mock - temporal)
+│   │   │   └── products.ts    # Product catalog
+│   │   ├── config/            # Configuration files
+│   │   │   └── contact.ts     # Contact information
+│   │   ├── theme/             # Material-UI theme
+│   │   │   └── muiTheme.ts    # Custom theme configuration
+│   │   ├── utils/             # Utility functions
+│   │   │   └── formatters.ts  # Price formatting (ARS locale)
+│   │   └── types/             # TypeScript types
+│   │       └── product.ts     # Product type definitions
+│   ├── backend/               # Backend application (ready for development)
+│   │   └── README.md          # Backend setup guide
+│   └── app -> frontend/app    # Symlink for Next.js compatibility
 ├── public/                    # Static files
 │   └── images/                # Product images
 └── Configuration files
 ```
+
+**Note**: The project is structured with separate `frontend` and `backend` folders to facilitate future backend development. Currently, all product data is in `src/frontend/data/products.ts` as mock data. Once the backend is ready, this will be replaced with API calls.
+
 
 ## Key Features Explained
 
@@ -142,7 +149,7 @@ All prices are displayed using Argentinian locale formatting:
 
 ### Adding or Modifying Products
 
-Edit `src/data/products.ts` to add or modify products:
+Edit `src/frontend/data/products.ts` to add or modify products:
 
 ```typescript
 {
@@ -184,8 +191,8 @@ Edit `src/data/products.ts` to add or modify products:
 
 ### Styling
 
-- **Global styles**: `src/app/globals.css`
-- **Material-UI theme**: `src/theme/muiTheme.ts`
+- **Global styles**: `src/frontend/app/globals.css`
+- **Material-UI theme**: `src/frontend/theme/muiTheme.ts`
 - **Tailwind config**: `tailwind.config.ts`
 
 Current color scheme uses dark slate gradients (`#0f172a` to `#334155`) for a premium, professional look.
@@ -194,7 +201,7 @@ Current color scheme uses dark slate gradients (`#0f172a` to `#334155`) for a pr
 
 > **⚠️ Important**: Before deploying to production, make sure to:
 >
-> - Update WhatsApp number and Instagram username in `src/config/contact.ts`
+> - Update WhatsApp number and Instagram username in `src/frontend/config/contact.ts`
 > - Test all contact buttons and image galleries
 > - Verify all product images are loading correctly
 

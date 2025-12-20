@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import { Product } from '@/types/product';
+import { Product } from '@/frontend/types/product';
 import { Card, CardContent, CardMedia, Typography, Box } from '@mui/material';
 import Link from 'next/link';
-import { formatPrice } from '@/utils/formatters';
+import { formatPrice } from '@/frontend/utils/formatters';
 
 interface ProductCardProps {
   product: Product;

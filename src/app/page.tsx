@@ -1,9 +1,9 @@
 'use client';
 
 import { Box, Container, Typography } from '@mui/material';
-import ProductCarousel from '@/components/ProductCarousel';
-import ProductCard from '@/components/ProductCard';
-import { getFeaturedProducts, products } from '@/data/products';
+import ProductCarousel from '@/frontend/components/ProductCarousel';
+import ProductCard from '@/frontend/components/ProductCard';
+import { getFeaturedProducts, products } from '@/frontend/data/products';
 import { Smartphone } from '@mui/icons-material';
 
 export default function Home() {
