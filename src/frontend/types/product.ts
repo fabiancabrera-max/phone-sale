@@ -1,16 +1,23 @@
+export type ProductStatus = 'featured' | 'on_sale' | 'sold';
+
+export type ProductCondition = 'new' | 'used_as_new' | 'used' | 'refurbished';
+
+export interface ProductSpecs {
+  condition: ProductCondition;
+  color: string;
+  storage: string;
+}
+
 export interface Product {
   id: string;
   title: string;
   description: string;
   price: number;
   images: string[];
-  featured: boolean;
-  specs?: {
-    storage?: string;
-    color?: string;
-    condition?: string;
-    [key: string]: string | undefined;
-  };
+  status: ProductStatus;
+  specs: ProductSpecs;
+  // Backward compatibility with existing frontend code
+  featured?: boolean;
 }
 
 export interface ContactConfig {
