@@ -1,6 +1,3 @@
-'use client';
-
-import { useParams, useRouter } from 'next/navigation';
 import {
   Box,
   Container,
@@ -10,20 +7,36 @@ import {
   Link,
   Paper,
 } from '@mui/material';
-import { ArrowBack, Home } from '@mui/icons-material';
+import { Home } from '@mui/icons-material';
 import ImageGallery from '@/frontend/components/ImageGallery';
 import ContactButtons from '@/frontend/components/ContactButtons';
-import { getProductById } from '@/frontend/data/products';
-
+import BackButton from '@/frontend/components/BackButton';
+import { getProductById } from '@/backend/lib/products';
 import { formatPrice } from '@/frontend/utils/formatters';
+import { Product as BackendProduct } from '@/backend/types';
+import { Product as FrontendProduct } from '@/frontend/types/product';
 
-export default function ProductDetail() {
-  const params = useParams();
-  const router = useRouter();
-  const productId = params.id as string;
-  const product = getProductById(productId);
+const serializeProduct = (product: BackendProduct): FrontendProduct => ({
+  id: product.id,
+  title: product.title,
+  description: product.description,
+  price: product.price,
+  images: product.images,
+  status: product.status,
+  specs: product.specs,
+});
 
-  if (!product) {
+const CONDITION_LABELS: Record<string, string> = {
+  new: 'Nuevo',
+  used_as_new: 'Usado - Como Nuevo',
+  used: 'Usado - Buen Estado',
+  refurbished: 'Reparado / Refurbished',
+};
+
+export default async function ProductDetail({ params }: { params: { id: string } }) {
+  const backendProduct = await getProductById(params.id);
+
+  if (!backendProduct) {
     return (
       <Container maxWidth="lg" className="py-16 text-center">
         <Typography variant="h4" className="mb-4">
@@ -35,6 +48,8 @@ export default function ProductDetail() {
       </Container>
     );
   }
+
+  const product = serializeProduct(backendProduct);
 
   return (
     <Box className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
@@ -55,17 +70,7 @@ export default function ProductDetail() {
           </Breadcrumbs>
 
           {/* Back Arrow Button */}
-          <Link
-            onClick={() => router.back()}
-            className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-900 hover:text-white cursor-pointer transition-all duration-300"
-            sx={{
-              '&:hover': {
-                transform: 'translateX(-4px)',
-              },
-            }}
-          >
-            <ArrowBack fontSize="small" />
-          </Link>
+          <BackButton />
         </Box>
 
         {/* Product Content */}
@@ -86,7 +91,7 @@ export default function ProductDetail() {
             {/* Product Info */}
             <Box className="flex flex-col gap-6">
               <Box>
-                {product.featured && (
+                {product.status === 'featured' && (
                   <Chip
                     label="Destacado"
                     className="mb-4"
@@ -144,7 +149,9 @@ export default function ProductDetail() {
                           variant="body2"
                           className="font-bold text-gray-900"
                         >
-                          {value}
+                          {key === 'condition'
+                            ? CONDITION_LABELS[value as string] || value
+                            : value}
                         </Typography>
                       </Box>
                     ))}

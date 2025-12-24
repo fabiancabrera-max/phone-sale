@@ -35,7 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               objectFit: 'cover',
             }}
           />
-          {product.featured && (
+          {product.status === 'featured' && (
             <Box className="absolute top-4 right-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
               Destacado
             </Box>

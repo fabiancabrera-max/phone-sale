@@ -1,16 +1,35 @@
-'use client';
-
 import { Box, Container, Typography } from '@mui/material';
 import ProductCarousel from '@/frontend/components/ProductCarousel';
 import ProductCard from '@/frontend/components/ProductCard';
-import { getFeaturedProducts, products } from '@/frontend/data/products';
+import DebugLogger from '@/frontend/components/DebugLogger';
+import { getFeaturedProducts, getProducts } from '@/backend/lib/products';
+import { Product as BackendProduct } from '@/backend/types';
+import { Product as FrontendProduct } from '@/frontend/types/product';
 import { Smartphone } from '@mui/icons-material';
 
-export default function Home() {
-  const featuredProducts = getFeaturedProducts();
+const serializeProduct = (product: BackendProduct): FrontendProduct => ({
+  id: product.id,
+  title: product.title,
+  description: product.description,
+  price: product.price,
+  images: product.images,
+  status: product.status,
+  specs: product.specs,
+});
+
+export default async function Home() {
+  // Fetch real data from Backend
+  const rawFeatured = await getFeaturedProducts();
+  const { items: rawProducts } = await getProducts(100, undefined, 'on_sale');
+
+  const featuredProducts = rawFeatured.map(serializeProduct);
+  const allProducts = rawProducts.map(serializeProduct);
 
   return (
     <Box className="min-h-screen bg-slate-50">
+      <DebugLogger label="Featured Products" data={featuredProducts} />
+      <DebugLogger label="All Products (On Sale)" data={allProducts} />
+
       {/* Hero Section */}
       <Box
         className="relative overflow-hidden"
@@ -75,27 +94,29 @@ export default function Home() {
       </Box>
 
       {/* Featured Products Carousel */}
-      <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 } }}>
-        <Box className="mb-8 text-center">
-          <Typography
-            variant="h2"
-            className="font-bold mb-3 text-slate-900 tracking-tight"
-            sx={{ fontSize: { xs: '2rem', md: '3rem' } }}
-          >
-            Productos Destacados
-          </Typography>
-          <Typography
-            variant="body1"
-            className="max-w-2xl mx-auto text-slate-600"
-            sx={{ fontSize: { xs: '1rem', md: '1.125rem' } }}
-          >
-            Descubre nuestra selección premium de iPhones con las mejores
-            características y precios
-          </Typography>
-        </Box>
+      {featuredProducts.length > 0 && (
+        <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 } }}>
+          <Box className="mb-8 text-center">
+            <Typography
+              variant="h2"
+              className="font-bold mb-3 text-slate-900 tracking-tight"
+              sx={{ fontSize: { xs: '2rem', md: '3rem' } }}
+            >
+              Productos Destacados
+            </Typography>
+            <Typography
+              variant="body1"
+              className="max-w-2xl mx-auto text-slate-600"
+              sx={{ fontSize: { xs: '1rem', md: '1.125rem' } }}
+            >
+              Descubre nuestra selección premium de iPhones con las mejores
+              características y precios
+            </Typography>
+          </Box>
 
-        <ProductCarousel products={featuredProducts} />
-      </Container>
+          <ProductCarousel products={featuredProducts} />
+        </Container>
+      )}
 
       {/* All Products Grid */}
       <Box className="bg-white py-16 border-t border-slate-100">
@@ -117,21 +138,29 @@ export default function Home() {
             </Typography>
           </Box>
 
-          <Box
-            className="grid gap-6"
-            sx={{
-              gridTemplateColumns: {
-                xs: '1fr',
-                sm: 'repeat(2, 1fr)',
-                md: 'repeat(3, 1fr)',
-                lg: 'repeat(4, 1fr)',
-              },
-            }}
-          >
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </Box>
+          {allProducts.length > 0 ? (
+            <Box
+              className="grid gap-6"
+              sx={{
+                gridTemplateColumns: {
+                  xs: '1fr',
+                  sm: 'repeat(2, 1fr)',
+                  md: 'repeat(3, 1fr)',
+                  lg: 'repeat(4, 1fr)',
+                },
+              }}
+            >
+              {allProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </Box>
+          ) : (
+            <Box className="text-center py-12">
+              <Typography variant="body1" color="text.secondary">
+                No hay productos disponibles por el momento.
+              </Typography>
+            </Box>
+          )}
         </Container>
       </Box>
 

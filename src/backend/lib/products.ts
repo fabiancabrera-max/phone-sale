@@ -7,7 +7,7 @@ import {
     PaginatedResponse,
     ProductStatus,
 } from '@/backend/types';
-import { Timestamp } from 'firebase-admin/firestore';
+import { Timestamp, Query } from 'firebase-admin/firestore';
 import { ValidationError } from '@/backend/utils/validation';
 
 /**
@@ -85,7 +85,7 @@ export async function updateProduct(
         );
     }
 
-    const updateData: any = {
+    const updateData: Record<string, any> = {
         ...input,
         updatedAt: Timestamp.now(),
     };
@@ -147,21 +147,21 @@ export async function getProducts(
     startAfter?: string,
     status?: ProductStatus
 ): Promise<PaginatedResponse<Product>> {
-    let query = adminDb
+    let query: Query = adminDb
         .collection(COLLECTIONS.PRODUCTS)
-        .orderBy('createdAt', 'desc')
+        // .orderBy('createdAt', 'desc') // TODO: Enable this after creating Firestore Index (status + createdAt)
         .limit(limit + 1); // Fetch one extra to check if there are more
 
     // Filter by status if provided
     if (status) {
-        query = query.where('status', '==', status) as any;
+        query = query.where('status', '==', status);
     }
 
     // Start after cursor if provided
     if (startAfter) {
         const startDoc = await adminDb.collection(COLLECTIONS.PRODUCTS).doc(startAfter).get();
         if (startDoc.exists) {
-            query = query.startAfter(startDoc) as any;
+            query = query.startAfter(startDoc);
         }
     }
 
@@ -198,16 +198,16 @@ export async function getProductsByUser(
     limit: number = 20,
     startAfter?: string
 ): Promise<PaginatedResponse<Product>> {
-    let query = adminDb
+    let query: Query = adminDb
         .collection(COLLECTIONS.PRODUCTS)
         .where('createdBy', '==', userId)
-        .orderBy('createdAt', 'desc')
+        // .orderBy('createdAt', 'desc') // TODO: Enable index (createdBy + createdAt)
         .limit(limit + 1);
 
     if (startAfter) {
         const startDoc = await adminDb.collection(COLLECTIONS.PRODUCTS).doc(startAfter).get();
         if (startDoc.exists) {
-            query = query.startAfter(startDoc) as any;
+            query = query.startAfter(startDoc);
         }
     }
 
@@ -275,7 +275,7 @@ export async function getFeaturedProducts(limit: number = 10): Promise<Product[]
     const snapshot = await adminDb
         .collection(COLLECTIONS.PRODUCTS)
         .where('status', '==', 'featured')
-        .orderBy('createdAt', 'desc')
+        // .orderBy('createdAt', 'desc') // TODO: Enable index (status + createdAt)
         .limit(limit)
         .get();
 

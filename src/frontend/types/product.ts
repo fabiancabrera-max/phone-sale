@@ -16,8 +16,6 @@ export interface Product {
   images: string[];
   status: ProductStatus;
   specs: ProductSpecs;
-  // Backward compatibility with existing frontend code
-  featured?: boolean;
 }
 
 export interface ContactConfig {
