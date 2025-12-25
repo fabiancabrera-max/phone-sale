@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Product } from '@/frontend/types/product';
-import { Card, CardContent, CardMedia, Typography, Box } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography, Box, Chip } from '@mui/material';
 import Link from 'next/link';
 import { formatPrice } from '@/frontend/utils/formatters';
 
@@ -10,7 +10,26 @@ interface ProductCardProps {
   product: Product;
 }
 
+const STATUS_CONFIG: Record<string, { label: string; sx?: any }> = {
+  featured: {
+    label: 'Destacado',
+    sx: {
+      background: 'linear-gradient(135deg, #a855f7 0%, #ec4899 100%)',
+      color: 'white',
+    },
+  },
+  sold: {
+    label: 'Vendido',
+    sx: {
+      bgcolor: '#475569', // Slate-600: Subtle yet clear
+      color: 'white',
+    },
+  },
+};
+
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  const statusConfig = STATUS_CONFIG[product.status];
+
   return (
     <Link href={`/product/${product.id}`} className="no-underline">
       <Card
@@ -35,10 +54,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               objectFit: 'cover',
             }}
           />
-          {product.status === 'featured' && (
-            <Box className="absolute top-4 right-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full text-sm font-semibold shadow-lg">
-              Destacado
-            </Box>
+          {product.status !== 'on_sale' && statusConfig && (
+            <Chip
+              label={statusConfig.label}
+              sx={{
+                position: 'absolute',
+                top: 16,
+                right: 16,
+                fontWeight: 'bold',
+                boxShadow: 3,
+                ...statusConfig.sx,
+              }}
+            />
           )}
         </Box>
 
