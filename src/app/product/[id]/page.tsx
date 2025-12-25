@@ -34,8 +34,8 @@ const CONDITION_LABELS: Record<string, string> = {
 };
 
 export default async function ProductDetail(props: { params: Promise<{ id: string }> }) {
-  const params = await props.params;
-  const backendProduct = await getProductById(params.id);
+  const { id } = await props.params;
+  const backendProduct = await getProductById(id);
 
   if (!backendProduct) {
     return (

@@ -26,10 +26,10 @@ import { deleteProductImages } from '@/backend/utils/image';
  */
 export async function GET(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
-        const productId = params.id;
+        const { id: productId } = await context.params;
 
         // Optional auth - allows both authenticated and public access
         const decodedToken = await optionalAuth(request);
@@ -68,14 +68,14 @@ export async function GET(
  */
 export async function PUT(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
         // Validate method
         const methodError = validateMethod(request, ['PUT']);
         if (methodError) return methodError;
 
-        const productId = params.id;
+        const { id: productId } = await context.params;
 
         // Verify authentication
         const decodedToken = await requireAuth(request);
@@ -112,14 +112,14 @@ export async function PUT(
  */
 export async function DELETE(
     request: NextRequest,
-    { params }: { params: { id: string } }
+    context: { params: Promise<{ id: string }> }
 ) {
     try {
         // Validate method
         const methodError = validateMethod(request, ['DELETE']);
         if (methodError) return methodError;
 
-        const productId = params.id;
+        const { id: productId } = await context.params;
 
         // Verify authentication
         const decodedToken = await requireAuth(request);
