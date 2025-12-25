@@ -73,7 +73,9 @@
 *   `src/backend/lib/`: Lógica de negocio y acceso a datos (usada por API y Server Components).
 *   `src/app/api/`: Endpoints REST para operaciones de escritura/admin desde el cliente.
 *   `src/app/(public)`: `page.tsx`, `product/[id]/page.tsx` (Server Components).
+    *   **Nota**: Rutas dinámicas usan `await params` (Next.js 15+ standard).
 *   `src/app/admin/_components/`: Componentes privados del panel de administración (ej: `ProductForm`).
+*   **Nota**: No existen datos mock (`src/frontend/data` eliminado). Toda la data es real.
 
 ## Estructura de Datos (Firestore)
 
@@ -100,11 +102,9 @@
 ## Seguridad y Control de Costos
 
 ### Índices de Firestore (Requeridos)
-Para permitir el ordenamiento y filtrado eficiente, se requieren los siguientes índices compuestos:
+Para permitir el ordenamiento y filtrado eficiente, se requieren los siguientes índices compuestos (ya configurados):
 1.  Collection `products`: `status` (Asc) + `createdAt` (Desc)
 2.  Collection `products`: `createdBy` (Asc) + `createdAt` (Desc)
-
-> **Nota**: El código actual tiene el ordenamiento por fecha comentado (`// TODO`) hasta que estos índices sean creados en producción.
 
 ### Validaciones Backend
 *   Tipado fuerte en `src/backend/lib/products.ts` usando `Query` y `Record<string, any>` para evitar `any`.
@@ -134,7 +134,7 @@ Para permitir el ordenamiento y filtrado eficiente, se requieren los siguientes 
 - [x] Product Detail (Server Component)
 - [x] Galerías y Componentes UI Optimizados (Chips, Cards)
 - [x] Integración de Datos Reales
+- [x] Índices creados y ordenamiento activo
 
 ### Pendiente
-- [ ] Crear Índices en Firestore Console para reactivar ordenamiento cronológico.
 - [ ] Optimización de imágenes (Next.js Image / Firebase Resize).

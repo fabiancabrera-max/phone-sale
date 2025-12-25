@@ -149,7 +149,7 @@ export async function getProducts(
 ): Promise<PaginatedResponse<Product>> {
     let query: Query = adminDb
         .collection(COLLECTIONS.PRODUCTS)
-        // .orderBy('createdAt', 'desc') // TODO: Enable this after creating Firestore Index (status + createdAt)
+        .orderBy('createdAt', 'desc') // TODO: Enable this after creating Firestore Index (status + createdAt)
         .limit(limit + 1); // Fetch one extra to check if there are more
 
     // Filter by status if provided
@@ -201,7 +201,7 @@ export async function getProductsByUser(
     let query: Query = adminDb
         .collection(COLLECTIONS.PRODUCTS)
         .where('createdBy', '==', userId)
-        // .orderBy('createdAt', 'desc') // TODO: Enable index (createdBy + createdAt)
+        .orderBy('createdAt', 'desc') // TODO: Enable index (createdBy + createdAt)
         .limit(limit + 1);
 
     if (startAfter) {
@@ -275,7 +275,7 @@ export async function getFeaturedProducts(limit: number = 10): Promise<Product[]
     const snapshot = await adminDb
         .collection(COLLECTIONS.PRODUCTS)
         .where('status', '==', 'featured')
-        // .orderBy('createdAt', 'desc') // TODO: Enable index (status + createdAt)
+        .orderBy('createdAt', 'desc') // TODO: Enable index (status + createdAt)
         .limit(limit)
         .get();
 

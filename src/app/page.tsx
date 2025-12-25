@@ -1,6 +1,7 @@
 import { Box, Container, Typography } from '@mui/material';
 import ProductCarousel from '@/frontend/components/ProductCarousel';
 import ProductCard from '@/frontend/components/ProductCard';
+import DebugLogger from '@/frontend/components/DebugLogger';
 
 import { getFeaturedProducts, getProducts } from '@/backend/lib/products';
 import { Product as BackendProduct } from '@/backend/types';
@@ -27,6 +28,8 @@ export default async function Home() {
 
   return (
     <Box className="min-h-screen bg-slate-50">
+      <DebugLogger label="Featured Products" data={featuredProducts} />
+      <DebugLogger label="All Products (On Sale)" data={allProducts} />
 
       {/* Hero Section */}
       <Box
