@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import {
     Box,
     Button,
-    Grid,
+    Grid2 as Grid,
     Paper,
     TextField,
     Typography,
@@ -13,6 +13,8 @@ import {
     CircularProgress,
     Alert,
     InputAdornment,
+    useTheme,
+    useMediaQuery,
 } from '@mui/material';
 import {
     CloudUpload,
@@ -47,6 +49,8 @@ const STATUSES = [
 export default function ProductForm({ initialData, onSubmit, title }: ProductFormProps) {
     const router = useRouter();
     const { getToken } = useAuth();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
     const [tempId] = useState(() => initialData?.id || (typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `temp_${Date.now()}`));
 
@@ -167,26 +171,51 @@ export default function ProductForm({ initialData, onSubmit, title }: ProductFor
 
     return (
         <Box component="form" onSubmit={handleSubmit} className="max-w-4xl mx-auto">
-            <Box className="flex items-center justify-between mb-6">
-                <Button
-                    startIcon={<ArrowBack />}
-                    onClick={() => router.back()}
-                    className="text-slate-600"
+            {/* Header Section */}
+            <Box
+                className="flex items-center justify-between mb-4"
+                sx={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 2
+                }}
+            >
+                <Typography
+                    variant={isMobile ? "h4" : "h5"}
+                    className={`font-bold text-slate-900 ${isMobile ? 'font-extrabold' : ''}`}
                 >
-                    Volver
-                </Button>
-                <Typography variant="h5" className="font-bold text-slate-800">
                     {title}
                 </Typography>
-                <Button
-                    variant="contained"
-                    type="submit"
-                    disabled={submitting || uploading}
-                    startIcon={submitting ? <CircularProgress size={20} color="inherit" /> : <Save />}
-                    className="bg-blue-600 hover:bg-blue-700"
-                >
-                    {submitting ? 'Guardando...' : 'Guardar Producto'}
-                </Button>
+
+                <Box className="flex items-center gap-2">
+                    <Button
+                        startIcon={<ArrowBack />}
+                        onClick={() => router.back()}
+                        className="text-slate-600 hover:bg-slate-100 px-4 py-2 rounded-xl transition-all"
+                        sx={{
+                            textTransform: 'none',
+                            fontWeight: 600,
+                            // On desktop it stays first, on mobile it goes to the right? 
+                            // Actually, let's just reverse the order in the DOM or use order property
+                            order: isMobile ? 1 : -1
+                        }}
+                    >
+                        Volver
+                    </Button>
+
+                    {!isMobile && (
+                        <Button
+                            variant="contained"
+                            type="submit"
+                            disabled={submitting || uploading}
+                            startIcon={submitting ? <CircularProgress size={20} color="inherit" /> : <Save />}
+                            className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200 py-2.5 px-6 rounded-xl transition-all normal-case"
+                            sx={{ fontWeight: 600 }}
+                        >
+                            {submitting ? 'Guardando...' : 'Guardar Producto'}
+                        </Button>
+                    )}
+                </Box>
             </Box>
 
             {error && (
@@ -197,14 +226,18 @@ export default function ProductForm({ initialData, onSubmit, title }: ProductFor
 
             <Grid container spacing={4}>
                 {/* Left Column: Basic Info */}
-                <Grid item xs={12} md={8}>
-                    <Paper className="p-6 rounded-2xl border border-slate-200" elevation={0}>
-                        <Typography variant="h6" className="mb-4 font-bold text-slate-800">
+                <Grid size={{ xs: 12, md: 8 }}>
+                    <Paper
+                        className="p-6 md:p-8 rounded-[2rem] border border-slate-100 bg-white/80 backdrop-blur-sm"
+                        elevation={0}
+                        sx={{ boxShadow: '0 4px 20px -5px rgba(0,0,0,0.05)' }}
+                    >
+                        <Typography variant="h6" className="pb-2 font-bold text-slate-800">
                             Información Básica
                         </Typography>
 
                         <Grid container spacing={3}>
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <TextField
                                     fullWidth
                                     label="Título del Producto"
@@ -216,7 +249,7 @@ export default function ProductForm({ initialData, onSubmit, title }: ProductFor
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid size={{ xs: 12 }}>
                                 <TextField
                                     fullWidth
                                     label="Descripción"
@@ -229,7 +262,7 @@ export default function ProductForm({ initialData, onSubmit, title }: ProductFor
                                 />
                             </Grid>
 
-                            <Grid item xs={12} sm={6}>
+                            <Grid size={{ xs: 12, sm: 6 }}>
                                 <TextField
                                     fullWidth
                                     label="Precio"
@@ -244,7 +277,7 @@ export default function ProductForm({ initialData, onSubmit, title }: ProductFor
                                 />
                             </Grid>
 
-                            <Grid item xs={12} sm={6}>
+                            <Grid size={{ xs: 12, sm: 6 }}>
                                 <TextField
                                     fullWidth
                                     select
@@ -264,12 +297,16 @@ export default function ProductForm({ initialData, onSubmit, title }: ProductFor
                         </Grid>
                     </Paper>
 
-                    <Paper className="p-6 mt-6 rounded-2xl border border-slate-200" elevation={0}>
-                        <Typography variant="h6" className="mb-4 font-bold text-slate-800">
+                    <Paper
+                        className="p-6 md:p-8 mt-8 rounded-[2rem] border border-slate-100 bg-white/80 backdrop-blur-sm"
+                        elevation={0}
+                        sx={{ boxShadow: '0 4px 20px -5px rgba(0,0,0,0.05)' }}
+                    >
+                        <Typography variant="h6" className="pb-4 font-bold text-slate-800">
                             Especificaciones
                         </Typography>
                         <Grid container spacing={3}>
-                            <Grid item xs={12} sm={4}>
+                            <Grid size={{ xs: 12, sm: 4 }}>
                                 <TextField
                                     fullWidth
                                     select
@@ -286,7 +323,7 @@ export default function ProductForm({ initialData, onSubmit, title }: ProductFor
                                     ))}
                                 </TextField>
                             </Grid>
-                            <Grid item xs={12} sm={4}>
+                            <Grid size={{ xs: 12, sm: 4 }}>
                                 <TextField
                                     fullWidth
                                     label="Color"
@@ -297,7 +334,7 @@ export default function ProductForm({ initialData, onSubmit, title }: ProductFor
                                     placeholder="Ej: Titanio Natural"
                                 />
                             </Grid>
-                            <Grid item xs={12} sm={4}>
+                            <Grid size={{ xs: 12, sm: 4 }}>
                                 <TextField
                                     fullWidth
                                     label="Almacenamiento"
@@ -313,8 +350,12 @@ export default function ProductForm({ initialData, onSubmit, title }: ProductFor
                 </Grid>
 
                 {/* Right Column: Images */}
-                <Grid item xs={12} md={4}>
-                    <Paper className="p-6 rounded-2xl border border-slate-200 sticky top-6" elevation={0}>
+                <Grid size={{ xs: 12, md: 4 }}>
+                    <Paper
+                        className="p-6 md:p-8 rounded-[2rem] border border-slate-100 bg-white/80 backdrop-blur-sm sticky top-6"
+                        elevation={0}
+                        sx={{ boxShadow: '0 4px 20px -5px rgba(0,0,0,0.05)' }}
+                    >
                         <Typography variant="h6" className="mb-4 font-bold text-slate-800">
                             Imágenes ({images.length}/5)
                         </Typography>
@@ -379,6 +420,50 @@ export default function ProductForm({ initialData, onSubmit, title }: ProductFor
                     </Paper>
                 </Grid>
             </Grid>
+
+            {/* Sticky Bottom Action Bar for Mobile */}
+            {isMobile && (
+                <Box
+                    sx={{
+                        position: 'fixed',
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        p: 2.5,
+                        background: 'rgba(255, 255, 255, 0.8)',
+                        backdropFilter: 'blur(16px)',
+                        borderTop: '1px solid rgba(0, 0, 0, 0.05)',
+                        zIndex: 1000,
+                        display: 'flex',
+                        gap: 2,
+                        boxShadow: '0 -10px 25px -5px rgba(0,0,0,0.1)'
+                    }}
+                >
+                    <Button
+                        fullWidth
+                        variant="outlined"
+                        onClick={() => router.back()}
+                        className="border-slate-200 text-slate-600 rounded-2xl normal-case py-3"
+                        sx={{ fontWeight: 600 }}
+                    >
+                        Cancelar
+                    </Button>
+                    <Button
+                        fullWidth
+                        variant="contained"
+                        type="submit"
+                        disabled={submitting || uploading}
+                        startIcon={submitting ? <CircularProgress size={20} color="inherit" /> : <Save />}
+                        className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200 rounded-2xl normal-case py-3"
+                        sx={{ fontWeight: 600 }}
+                    >
+                        {submitting ? 'Guardando...' : 'Guardar'}
+                    </Button>
+                </Box>
+            )}
+
+            {/* Spacer for sticky bar */}
+            {isMobile && <Box sx={{ height: 100 }} />}
         </Box>
     );
 }

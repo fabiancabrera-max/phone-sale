@@ -21,6 +21,10 @@ import {
     Tooltip,
     CircularProgress,
     Alert,
+    useTheme,
+    useMediaQuery,
+    Fab,
+    Grid2 as Grid,
 } from '@mui/material';
 import {
     Add,
@@ -48,6 +52,8 @@ const CONDITION_LABELS: Record<string, string> = {
 
 export default function DashboardPage() {
     const { getToken } = useAuth();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -117,111 +123,199 @@ export default function DashboardPage() {
 
     return (
         <Box>
-            <Box className="flex justify-between items-center mb-8">
-                <Typography variant="h4" className="font-bold text-slate-800">
+            <Box className={`flex justify-between items-center ${isMobile ? 'mb-4' : 'mb-6'}`}>
+                <Typography
+                    variant={isMobile ? "h4" : "h4"}
+                    className={`font-bold text-slate-900 ${isMobile ? 'font-extrabold' : ''}`}
+                >
                     Productos
                 </Typography>
-                <Box className="flex gap-2">
-                    <Button
-                        startIcon={<Refresh />}
-                        onClick={() => fetchProducts()}
-                        variant="outlined"
-                        className="border-slate-300 text-slate-600"
-                    >
-                        Actualizar
-                    </Button>
-                    <Link href="/admin/dashboard/new">
-                        <Button
-                            variant="contained"
-                            startIcon={<Add />}
-                            className="bg-blue-600 hover:bg-blue-700"
+                <Box className="flex items-center gap-2">
+                    <Tooltip title="Actualizar lista">
+                        <IconButton
+                            onClick={() => fetchProducts()}
+                            className="bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all"
+                            sx={{ width: 44, height: 44 }}
                         >
-                            Nuevo Producto
-                        </Button>
-                    </Link>
+                            <Refresh />
+                        </IconButton>
+                    </Tooltip>
+
+                    {!isMobile && (
+                        <Link href="/admin/dashboard/new">
+                            <Button
+                                variant="contained"
+                                startIcon={<Add />}
+                                className="bg-blue-600 hover:bg-blue-700 shadow-lg shadow-blue-200 py-2.5 px-6 rounded-xl transition-all normal-case font-semibold"
+                            >
+                                Nuevo Producto
+                            </Button>
+                        </Link>
+                    )}
                 </Box>
             </Box>
 
-            {error && (
-                <Alert severity="error" className="mb-4">
-                    {error}
-                </Alert>
-            )}
+            {loading ? (
+                <Box className="flex flex-col items-center justify-center py-20 bg-white/50 backdrop-blur-sm rounded-[2rem] border border-slate-100">
+                    <CircularProgress size={48} className="mb-4" />
+                    <Typography className="text-slate-500 font-medium">Cargando productos...</Typography>
+                </Box>
+            ) : products.length === 0 ? (
+                <Box className="text-center py-20 bg-white/50 backdrop-blur-sm rounded-[2rem] border border-slate-100">
+                    <Typography className="text-slate-500 font-medium h6 mb-4">
+                        No hay productos registrados.
+                    </Typography>
+                    <Link href="/admin/dashboard/new">
+                        <Button variant="contained" className="bg-blue-600 rounded-xl px-6">
+                            Crear el primero
+                        </Button>
+                    </Link>
+                </Box>
+            ) : isMobile ? (
+                /* Mobile Cards View */
+                <Grid container spacing={2}>
+                    {products.map((product) => (
+                        <Grid size={{ xs: 12 }} key={product.id}>
+                            <Paper
+                                className="p-4 rounded-[1.5rem] border border-slate-100 bg-white/80 backdrop-blur-sm flex gap-4 overflow-hidden relative"
+                                elevation={0}
+                                sx={{ boxShadow: '0 4px 15px -3px rgba(0,0,0,0.04)' }}
+                            >
+                                <Avatar
+                                    variant="rounded"
+                                    src={product.images[0]}
+                                    alt={product.title}
+                                    sx={{ width: 80, height: 80 }}
+                                    className="border border-slate-200 shadow-sm"
+                                />
+                                <Box className="flex-1 flex flex-col justify-between min-w-0">
+                                    <Box className="mb-auto">
+                                        <Box className="flex justify-between items-start gap-2">
+                                            <Typography className="font-bold text-slate-900 truncate flex-1 pr-4">
+                                                {product.title}
+                                            </Typography>
+                                            {product.status === 'featured' && (
+                                                <Star sx={{ fontSize: 18 }} className="text-amber-400" />
+                                            )}
+                                        </Box>
 
-            <TableContainer component={Paper} elevation={0} className="border border-slate-200 rounded-xl overflow-hidden">
-                <Table>
-                    <TableHead className="bg-slate-50">
-                        <TableRow>
-                            <TableCell className="font-bold text-slate-500">Imagen</TableCell>
-                            <TableCell className="font-bold text-slate-500">Producto</TableCell>
-                            <TableCell className="font-bold text-slate-500">Precio</TableCell>
-                            <TableCell className="font-bold text-slate-500">Estado</TableCell>
-                            <TableCell className="font-bold text-slate-500">Specs</TableCell>
-                            <TableCell align="right" className="font-bold text-slate-500">Acciones</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {loading ? (
+                                        <Typography variant="caption" className="text-slate-400 line-clamp-2 leading-tight block mt-0.5">
+                                            {product.description}
+                                        </Typography>
+
+                                        <Box className="flex items-center gap-2 mt-1.5 flex-wrap">
+                                            <Typography variant="caption" className="font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md">
+                                                {formatPrice(product.price)}
+                                            </Typography>
+                                            <Chip
+                                                label={STATUS_CONFIG[product.status]?.label || product.status}
+                                                color={STATUS_CONFIG[product.status]?.color || 'default'}
+                                                size="small"
+                                                className="h-5 text-[10px] font-bold"
+                                                sx={{ borderRadius: '6px' }}
+                                            />
+                                        </Box>
+                                    </Box>
+
+                                    <Box className="flex justify-start gap-2 mt-3">
+                                        <Link href={`/admin/dashboard/edit/${product.id}`}>
+                                            <Button
+                                                size="small"
+                                                variant="outlined"
+                                                startIcon={<Edit sx={{ fontSize: 14 }} />}
+                                                className="border-blue-100 text-blue-600 bg-blue-50/30 rounded-xl normal-case"
+                                                sx={{ height: 32, fontSize: '0.75rem', px: 2, borderRadius: '12px' }}
+                                            >
+                                                Editar
+                                            </Button>
+                                        </Link>
+                                        <Button
+                                            size="small"
+                                            color="error"
+                                            variant="outlined"
+                                            className="border-red-100 text-red-600 bg-red-50/30 rounded-xl normal-case min-w-[36px] p-0"
+                                            sx={{ height: 32, width: 36, minWidth: 36, borderRadius: '12px' }}
+                                            onClick={() => handleDelete(product.id, product.title)}
+                                            disabled={deletingId === product.id}
+                                        >
+                                            {deletingId === product.id ? <CircularProgress size={16} color="inherit" /> : <Delete sx={{ fontSize: 16 }} />}
+                                        </Button>
+                                    </Box>
+                                </Box>
+
+
+                            </Paper>
+                        </Grid>
+                    ))}
+                </Grid>
+            ) : (
+                /* Desktop Table View */
+                <TableContainer
+                    component={Paper}
+                    elevation={0}
+                    className="border border-slate-100 rounded-[2rem] bg-white/80 backdrop-blur-sm shadow-xl shadow-slate-200/50"
+                >
+                    <Table>
+                        <TableHead className="bg-slate-50/50">
                             <TableRow>
-                                <TableCell colSpan={6} align="center" className="py-12">
-                                    <CircularProgress />
-                                </TableCell>
+                                <TableCell className="font-bold text-slate-500 py-6 pl-8">Imagen</TableCell>
+                                <TableCell className="font-bold text-slate-500 py-6">Producto</TableCell>
+                                <TableCell className="font-bold text-slate-500 py-6">Precio</TableCell>
+                                <TableCell className="font-bold text-slate-500 py-6">Estado</TableCell>
+                                <TableCell className="font-bold text-slate-500 py-6">Specs</TableCell>
+                                <TableCell align="right" className="font-bold text-slate-500 py-6 pr-8">Acciones</TableCell>
                             </TableRow>
-                        ) : products.length === 0 ? (
-                            <TableRow>
-                                <TableCell colSpan={6} align="center" className="py-12 text-slate-500">
-                                    No hay productos registrados. ¡Crea el primero!
-                                </TableCell>
-                            </TableRow>
-                        ) : (
-                            products.map((product) => (
-                                <TableRow key={product.id} hover>
-                                    <TableCell>
+                        </TableHead>
+                        <TableBody>
+                            {products.map((product) => (
+                                <TableRow key={product.id} hover sx={{ '&:last-child td': { border: 0 } }}>
+                                    <TableCell className="py-4 pl-8">
                                         <Avatar
                                             variant="rounded"
                                             src={product.images[0]}
                                             alt={product.title}
-                                            sx={{ width: 56, height: 56 }}
-                                            className="border border-slate-200"
+                                            sx={{ width: 64, height: 64 }}
+                                            className="border border-slate-100 shadow-sm transition-transform hover:scale-110"
                                         />
                                     </TableCell>
-                                    <TableCell>
-                                        <Typography className="font-semibold text-slate-800">
+                                    <TableCell className="py-4">
+                                        <Typography className="font-bold text-slate-900">
                                             {product.title}
                                         </Typography>
-                                        <Typography variant="caption" className="text-slate-500 block max-w-xs truncate">
+                                        <Typography variant="caption" className="text-slate-400 block max-w-xs truncate overflow-hidden">
                                             {product.description}
                                         </Typography>
                                     </TableCell>
-                                    <TableCell>
-                                        <Typography className="font-medium">
+                                    <TableCell className="py-4">
+                                        <Typography className="font-heavy text-slate-900">
                                             {formatPrice(product.price)}
                                         </Typography>
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell className="py-4">
                                         <Chip
                                             label={STATUS_CONFIG[product.status]?.label || product.status}
                                             color={STATUS_CONFIG[product.status]?.color || 'default'}
                                             size="small"
-                                            className="font-semibold"
+                                            className="font-bold px-1"
+                                            sx={{ borderRadius: '8px', height: 24 }}
                                             icon={product.status === 'featured' ? <Star fontSize="small" /> : undefined}
                                         />
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell className="py-4">
                                         <Box className="flex flex-col gap-1">
-                                            <Typography variant="caption" className="text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full inline-block w-fit">
+                                            <Typography variant="caption" className="text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full font-bold w-fit border border-blue-100/50">
                                                 {CONDITION_LABELS[product.specs?.condition] || product.specs?.condition}
                                             </Typography>
-                                            <Typography variant="caption" className="text-slate-500">
+                                            <Typography variant="caption" className="text-slate-500 font-medium pl-1">
                                                 {product.specs?.storage} • {product.specs?.color}
                                             </Typography>
                                         </Box>
                                     </TableCell>
-                                    <TableCell align="right">
-                                        <Box className="flex justify-end gap-1">
+                                    <TableCell align="right" className="py-4 pr-8">
+                                        <Box className="flex justify-end gap-2">
                                             <Tooltip title="Editar">
                                                 <Link href={`/admin/dashboard/edit/${product.id}`}>
-                                                    <IconButton size="small" className="text-blue-600 bg-blue-50 hover:bg-blue-100">
+                                                    <IconButton size="small" className="text-blue-600 bg-blue-50/50 hover:bg-blue-100 transition-all">
                                                         <Edit fontSize="small" />
                                                     </IconButton>
                                                 </Link>
@@ -229,7 +323,7 @@ export default function DashboardPage() {
                                             <Tooltip title="Eliminar">
                                                 <IconButton
                                                     size="small"
-                                                    className="text-red-600 bg-red-50 hover:bg-red-100"
+                                                    className="text-red-600 bg-red-50/50 hover:bg-red-100 transition-all"
                                                     onClick={() => handleDelete(product.id, product.title)}
                                                     disabled={deletingId === product.id}
                                                 >
@@ -243,11 +337,37 @@ export default function DashboardPage() {
                                         </Box>
                                     </TableCell>
                                 </TableRow>
-                            ))
-                        )}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            )}
+
+            {/* Mobile FAB for New Product */}
+            {isMobile && (
+                <Link href="/admin/dashboard/new">
+                    <Fab
+                        aria-label="add"
+                        sx={{
+                            position: 'fixed',
+                            bottom: 60,
+                            right: 24,
+                            bgcolor: '#3b82f6', // blue-500
+                            color: 'white',
+                            '&:hover': {
+                                bgcolor: '#2563eb', // blue-600
+                                transform: 'scale(1.1)',
+                            },
+                            transition: 'all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                            boxShadow: '0 8px 30px -5px rgba(59, 130, 246, 0.5)',
+                            width: 60,
+                            height: 60,
+                        }}
+                    >
+                        <Add sx={{ fontSize: 32 }} />
+                    </Fab>
+                </Link>
+            )}
         </Box>
     );
 }
