@@ -1,0 +1,40 @@
+
+En el proyecto Phone-sale necesito crear el backend para administrar la carga y edicion de productos,
+quiero que la carpeta que dejamos generada para backend tenga los archivos necesarios.
+
+Contexto:
+- Tengo una app con Next.js (App Router).
+- Voy a usar Firebase Auth para autenticar usuarios.
+- Voy a usar cloud Firestore
+- Voy a usar cloud storage for Firebase para las imágenes.
+- Necesito: subir imagen -> obtener URL pública vía CDN -> guardar esa URL en Firestore -> mostrarla en Next.js.
+
+Objetivo:
+Diseñar arquitectura + implementación base (TypeScript) para:
+1) El usuario admin debe poder subir hasta 5 imágenes por producto.
+2) Cada imagen debe ser subida por el usuario admin.
+3) El producto debe tener title, description, price, condition, color, store, images, status, createdAt y updatedAt.
+4) Seguridad y control de costos: auth obligatoria, límites por usuario, validación de tipo/tamaño, keys seguras, rate limiting.
+
+Detalles técnicos que quiero que propongas y entregues:
+- Estructura de carpetas en Next.js (app/api/...).
+- Endpoints:
+  - POST /api/upload-url  -> verifica Firebase ID token, valida cuota y devuelve presignedUrl + key + publicUrl
+  - POST /api/images      -> persiste metadata en Firestore (o hacerlo dentro del primero si recomendás)
+- Código TypeScript real para:
+  - verificar Firebase ID token (Admin SDK) en Route Handler
+  -
+- Reglas y prácticas de seguridad:
+  - naming: key = users/{uid}/{uuid}.{ext}
+  - permitir solo content-types (jpeg/png/webp)
+  - límite de tamaño (ej 5MB) y límite diario por usuario
+  - evitar que el user elija el key directamente
+- (Opcional pero deseado) thumbnails/resize:
+  - alternativa B: Worker/Queue para generar versiones
+  - alternativa C: servir con Next/Image + sizes 
+
+
+Salida esperada:
+- Diagrama textual de la arquitectura
+- Código base completo (Route Handlers + helper libs)
+- Checklist de seguridad y control de costos
