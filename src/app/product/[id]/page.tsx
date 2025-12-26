@@ -33,7 +33,9 @@ const CONDITION_LABELS: Record<string, string> = {
   refurbished: 'Reparado / Refurbished',
 };
 
-export default async function ProductDetail(props: { params: Promise<{ id: string }> }) {
+export default async function ProductDetail(props: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await props.params;
   const backendProduct = await getProductById(id);
 

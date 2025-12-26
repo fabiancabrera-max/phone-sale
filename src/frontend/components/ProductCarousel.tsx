@@ -153,10 +153,11 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ products }) => {
           <Box
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`h-2 rounded-full cursor-pointer transition-all duration-300 ${index === currentIndex
+            className={`h-2 rounded-full cursor-pointer transition-all duration-300 ${
+              index === currentIndex
                 ? 'bg-primary-500 w-8'
                 : 'bg-gray-300 hover:bg-gray-400 w-2'
-              }`}
+            }`}
           />
         ))}
       </Box>

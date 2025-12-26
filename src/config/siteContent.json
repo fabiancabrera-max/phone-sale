@@ -1,0 +1,42 @@
+{
+  "hero": {
+    "title": "Phone Sale",
+    "subtitle": "Los Mejores iPhones al Mejor Precio",
+    "description": "Encuentra el iPhone perfecto para ti. Garantía incluida y envío gratis."
+  },
+  "featured": {
+    "title": "Productos Destacados",
+    "description": "Descubre nuestra selección premium de iPhones con las mejores características y precios"
+  },
+  "catalog": {
+    "title": "Todos los Modelos",
+    "description": "Explora nuestro catálogo completo de dispositivos disponibles",
+    "emptyMessage": "No hay productos disponibles por el momento."
+  },
+  "features": [
+    {
+      "title": "Pagos",
+      "description": "Aceptamos todos los medios de pago",
+      "icon": "💵"
+    },
+    {
+      "title": "Envío",
+      "description": "Tenemos envíos a todo el país",
+      "icon": "🚚"
+    },
+    {
+      "title": "Atención",
+      "description": "Asesoramiento personalizado",
+      "icon": "💬"
+    }
+  ],
+  "location": {
+    "title": "Nuestra Ubicación",
+    "description": "Visítanos en nuestro local para ver los equipos en persona y recibir asesoramiento técnico personalizado",
+    "address": "Vedia 2186, B1629AYB Pilar, Provincia de Buenos Aires",
+    "hours": "Lunes a Viernes de 10:00 a 19:00 | Sábados de 10:00 a 14:00"
+  },
+  "footer": {
+    "copy": "© 2024 Phone Sale. Todos los derechos reservados."
+  }
+}

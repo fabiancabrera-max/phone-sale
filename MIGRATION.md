@@ -29,6 +29,7 @@ src/
 Todas las importaciones ahora usan el prefijo `@/frontend/` para acceder al código del frontend:
 
 ### Antes:
+
 ```typescript
 import { Product } from '@/types/product';
 import { formatPrice } from '@/utils/formatters';
@@ -36,6 +37,7 @@ import ProductCard from '@/components/ProductCard';
 ```
 
 ### Ahora:
+
 ```typescript
 import { Product } from '@/frontend/types/product';
 import { formatPrice } from '@/frontend/utils/formatters';
@@ -45,11 +47,13 @@ import ProductCard from '@/frontend/components/ProductCard';
 ## Archivos Modificados
 
 ### Archivos de App Router (`src/app/`)
+
 - `app/page.tsx` - Actualizado imports
 - `app/layout.tsx` - Actualizado imports
 - `app/product/[id]/page.tsx` - Actualizado imports
 
 ### Archivos de Frontend (`src/frontend/`)
+
 - `frontend/components/ProductCarousel.tsx` - Actualizado imports
 - `frontend/components/ProductCard.tsx` - Actualizado imports
 - `frontend/components/ContactButtons.tsx` - Actualizado imports
@@ -57,6 +61,7 @@ import ProductCard from '@/frontend/components/ProductCard';
 - `frontend/data/products.ts` - Actualizado imports
 
 ### Archivos de Configuración
+
 - `tsconfig.json` - Sin cambios (alias `@/` apunta a `src/`)
 - `README.md` - Actualizado con nueva estructura
 
@@ -74,6 +79,7 @@ La solución adoptada mantiene `app/` en su ubicación esperada por Next.js, mie
    - ORM: Prisma, TypeORM, Mongoose, etc.
 
 2. **Crear la estructura del backend** en `src/backend/`:
+
    ```
    backend/
    ├── api/
@@ -98,6 +104,7 @@ La solución adoptada mantiene `app/` en su ubicación esperada por Next.js, mie
 ## Verificación
 
 El proyecto ha sido probado y funciona correctamente con la nueva estructura:
+
 - ✅ Servidor de desarrollo inicia sin errores
 - ✅ Todas las páginas se compilan correctamente
 - ✅ Las importaciones se resuelven correctamente

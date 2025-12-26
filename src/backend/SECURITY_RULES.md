@@ -10,16 +10,16 @@ Archivo: `firestore.rules`
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    
+
     // Helper functions
     function isAuthenticated() {
       return request.auth != null;
     }
-    
+
     function isOwner(userId) {
       return isAuthenticated() && request.auth.uid == userId;
     }
-    
+
     function isValidProduct() {
       let data = request.resource.data;
       return data.title is string
@@ -42,49 +42,49 @@ service cloud.firestore {
         && data.createdAt is timestamp
         && data.updatedAt is timestamp;
     }
-    
+
     // Products collection
     match /products/{productId} {
       // Anyone can read published products
-      allow read: if resource.data.status == 'published' 
+      allow read: if resource.data.status == 'published'
                   || (isAuthenticated() && resource.data.createdBy == request.auth.uid);
-      
+
       // Only authenticated users can create products
       allow create: if isAuthenticated()
                     && request.resource.data.createdBy == request.auth.uid
                     && isValidProduct();
-      
+
       // Only owner can update their products
       allow update: if isAuthenticated()
                     && resource.data.createdBy == request.auth.uid
                     && request.resource.data.createdBy == resource.data.createdBy
                     && request.resource.data.createdAt == resource.data.createdAt;
-      
+
       // Only owner can delete their products
       allow delete: if isAuthenticated()
                     && resource.data.createdBy == request.auth.uid;
     }
-    
+
     // Image quota collection
     match /image_quota/{quotaId} {
       // Only owner can read their quota
       allow read: if isAuthenticated()
                   && quotaId.matches('^' + request.auth.uid + '_.*');
-      
+
       // Only owner can write their quota
       allow write: if isAuthenticated()
                    && quotaId.matches('^' + request.auth.uid + '_.*');
     }
-    
+
     // Image metadata collection
     match /image_metadata/{imageId} {
       // Anyone authenticated can read image metadata
       allow read: if isAuthenticated();
-      
+
       // Only owner can create image metadata
       allow create: if isAuthenticated()
                     && request.resource.data.userId == request.auth.uid;
-      
+
       // Only owner can update/delete image metadata
       allow update, delete: if isAuthenticated()
                             && resource.data.userId == request.auth.uid;
@@ -101,36 +101,36 @@ Archivo: `storage.rules`
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
-    
+
     // Helper functions
     function isAuthenticated() {
       return request.auth != null;
     }
-    
+
     function isOwner(userId) {
       return isAuthenticated() && request.auth.uid == userId;
     }
-    
+
     function isValidImage() {
       return request.resource.size < 5 * 1024 * 1024  // 5MB
         && request.resource.contentType.matches('image/(jpeg|png|webp)');
     }
-    
+
     // User images: users/{userId}/{imageId}
     match /users/{userId}/{imageId} {
       // Anyone can read (images are public)
       allow read: if true;
-      
+
       // Only owner can upload images
       allow create: if isOwner(userId) && isValidImage();
-      
+
       // Only owner can delete images
       allow delete: if isOwner(userId);
-      
+
       // No updates allowed (delete and recreate instead)
       allow update: if false;
     }
-    
+
     // Product images (alternative path if needed)
     match /products/{productId}/{imageId} {
       allow read: if true;
@@ -159,28 +159,34 @@ service firebase.storage {
 ### Opción 2: Firebase CLI (Recomendado)
 
 1. Instalar Firebase CLI:
+
 ```bash
 npm install -g firebase-tools
 ```
 
 2. Login:
+
 ```bash
 firebase login
 ```
 
 3. Inicializar proyecto:
+
 ```bash
 firebase init
 ```
+
 - Selecciona "Firestore" y "Storage"
 - Selecciona tu proyecto
 - Acepta los archivos por defecto
 
 4. Editar archivos:
+
 - `firestore.rules` - Pega las reglas de Firestore
 - `storage.rules` - Pega las reglas de Storage
 
 5. Deploy:
+
 ```bash
 firebase deploy --only firestore:rules,storage:rules
 ```

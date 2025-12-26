@@ -2,7 +2,14 @@
 
 import React from 'react';
 import { Product } from '@/frontend/types/product';
-import { Card, CardContent, CardMedia, Typography, Box, Chip } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  Box,
+  Chip,
+} from '@mui/material';
 import Link from 'next/link';
 import { formatPrice } from '@/frontend/utils/formatters';
 

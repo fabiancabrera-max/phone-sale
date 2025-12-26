@@ -106,7 +106,6 @@ phone-sale/
 
 **Note**: The project is structured with separate `frontend` and `backend` folders to facilitate future backend development. Currently, all product data is in `src/frontend/data/products.ts` as mock data. Once the backend is ready, this will be replaced with API calls.
 
-
 ## Key Features Explained
 
 ### Responsive Product Carousel
@@ -149,6 +148,7 @@ You can change almost any text on the landing page without touching the code. Ed
 ### Admin Dashboard Features
 
 Access `/admin/dashboard` to:
+
 - Create, Edit, and Delete products.
 - Upload images directly to Cloudinary.
 - Manage "Featured" status to update the home carousel.

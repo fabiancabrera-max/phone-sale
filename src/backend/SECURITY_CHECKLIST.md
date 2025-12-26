@@ -239,18 +239,21 @@
 ## 📊 Métricas a Monitorear
 
 ### Diarias
+
 - Número de uploads
 - Storage usado (GB)
 - Bandwidth consumido (GB)
 - Errores 4xx/5xx
 
 ### Semanales
+
 - Usuarios activos
 - Productos creados
 - Costo estimado
 - Performance de queries
 
 ### Mensuales
+
 - Costo total
 - Tendencias de uso
 - Optimizaciones aplicadas
@@ -259,16 +262,19 @@
 ## 🔧 Herramientas Recomendadas
 
 ### Seguridad
+
 - [ ] **Sentry** - Error tracking
 - [ ] **Upstash Redis** - Rate limiting
 - [ ] **OWASP ZAP** - Security testing
 
 ### Performance
+
 - [ ] **Lighthouse** - Performance audits
 - [ ] **WebPageTest** - Load testing
 - [ ] **Firebase Performance Monitoring**
 
 ### Costos
+
 - [ ] **Firebase Cost Calculator**
 - [ ] **Google Cloud Billing Reports**
 - [ ] **Custom dashboard con Grafana**
@@ -276,6 +282,7 @@
 ## ⚠️ Alertas Críticas
 
 Configurar alertas para:
+
 - [ ] Costo diario > $10
 - [ ] Storage > 5GB
 - [ ] Bandwidth > 10GB/día
