@@ -4,24 +4,25 @@ A modern, responsive e-commerce website for selling iPhones built with Next.js, 
 
 ## Features
 
-- 🎨 **Premium Dark Design** - Modern UI with dark slate gradients and elegant aesthetics
-- 📱 **Fully Responsive** - Optimized for mobile, tablet, and desktop with adaptive layouts
-- 🖼️ **Product Carousel** - Auto-playing carousel with swipe support and manual navigation
-- 🔍 **Product Details** - Detailed product pages with interactive image galleries (5 images per product)
-- 💬 **Contact Integration** - WhatsApp and Instagram contact buttons with pre-filled messages
-- 🖼️ **Realistic Product Images** - High-quality generated images for iPhone 15 Pro Max, iPhone 15, and iPhone 14 Pro
-- 💰 **ARS Price Formatting** - Argentinian locale formatting (e.g., $ 1.299)
-- ⚡ **Fast Performance** - Built with Next.js for optimal performance
-- 🎯 **Type Safe** - Full TypeScript support
-- ✨ **Code Quality** - ESLint and Prettier configured
-- 🎨 **Custom Favicon** - Professional titanium-style favicon
+- 🎨 **Premium Modern Design** - Clean "Airy" UI for admin and sleek dark gradients for landing
+- 🔐 **Admin Dashboard** - Full CRUD for products, image uploading, and featured status management
+- 📱 **Fully Responsive** - Hybrid views (Table/Cards) and adaptive layouts for all devices
+- 🗺️ **Google Maps Integration** - Integrated location section with Pilar store details
+- ⚙️ **JSON Configuration** - Easily customize all website texts via `siteContent.json`
+- 🧪 **Unit Testing** - Robust test suite with Jest for formatters, forms, and dashboard
+- 🔍 **Product Details** - Interactive galleries and detailed specs
+- 💰 **Multi-Currency Support** - ARS/USD price formatting with locale-aware utility
+- 🖼️ **Image Management** - Cloudinary integration for professional image hosting
+- ⚡ **Next.js 15+ Optimized** - Using modern async patterns and App Router features
 
 ## Tech Stack
 
-- **Framework**: Next.js 15.5.6
+- **Framework**: Next.js 15.5+
 - **UI Library**: React 19.0.0
-- **Language**: TypeScript 5.7.2
-- **Styling**: Tailwind CSS 3.4.17 + Material-UI 6.3.0
+- **Testing**: Jest + React Testing Library
+- **Database**: PostgreSQL (Prisma/Neon)
+- **Image Hosting**: Cloudinary
+- **Styling**: Tailwind CSS 3.4 + Material-UI 6.3 (Grid2)
 - **Icons**: Material-UI Icons
 - **Code Quality**: ESLint + Prettier
 
@@ -47,20 +48,8 @@ cd phone-sale
 npm install
 ```
 
-3. **Update contact information** in `src/frontend/config/contact.ts`:
-
-```typescript
-export const contactConfig: ContactConfig = {
-  whatsapp: {
-    phoneNumber: 'YOUR_WHATSAPP_NUMBER', // Format: 5491112345678
-    messageTemplate: (product) =>
-      `Hola! Estoy interesado en el ${product.title} - ${formatPrice(product.price)}`,
-  },
-  instagram: {
-    username: 'YOUR_INSTAGRAM_USERNAME',
-  },
-};
-```
+3. Setup environment variables:
+   Copy `.env.example` to `.env.local` and fill in your Cloudinary and Database credentials.
 
 4. Start the development server
 
@@ -68,48 +57,50 @@ export const contactConfig: ContactConfig = {
 npm run dev
 ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser
+5. Open [http://localhost:3000](http://localhost:3000) for the public site or [/admin/dashboard](http://localhost:3000/admin/dashboard) for the admin panel.
+
+## Testing
+
+Run the full test suite to ensure stability:
+
+```bash
+# Run all tests
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+```
+
+We test utilities, UI components, and the Admin Dashboard integration.
 
 ## Available Scripts
 
 - `npm run dev` - Start development server
+- `npm test` - Run Jest tests
 - `npm run build` - Build for production
-- `npm run start` - Start production server
 - `npm run lint` - Run ESLint
 - `npm run format` - Format code with Prettier
-- `npm run format:check` - Check code formatting
 
 ## Project Structure
 
 ```
 phone-sale/
 ├── src/
-│   ├── frontend/              # Frontend application
-│   │   ├── app/               # Next.js app directory
-│   │   │   ├── icon.png       # Custom favicon
-│   │   │   ├── layout.tsx     # Root layout
-│   │   │   ├── page.tsx       # Home page (Hero, Carousel, Grid)
-│   │   │   └── product/[id]/  # Product detail pages
-│   │   ├── components/        # React components
-│   │   │   ├── ProductCarousel.tsx  # Responsive carousel with swipe
-│   │   │   ├── ProductCard.tsx      # Product card component
-│   │   │   ├── ImageGallery.tsx     # Image gallery with thumbnails
-│   │   │   └── ContactButtons.tsx   # WhatsApp/Instagram buttons
-│   │   ├── data/              # Product data (mock - temporal)
-│   │   │   └── products.ts    # Product catalog
-│   │   ├── config/            # Configuration files
-│   │   │   └── contact.ts     # Contact information
-│   │   ├── theme/             # Material-UI theme
-│   │   │   └── muiTheme.ts    # Custom theme configuration
-│   │   ├── utils/             # Utility functions
-│   │   │   └── formatters.ts  # Price formatting (ARS locale)
-│   │   └── types/             # TypeScript types
-│   │       └── product.ts     # Product type definitions
-│   ├── backend/               # Backend application (ready for development)
-│   │   └── README.md          # Backend setup guide
-│   └── app -> frontend/app    # Symlink for Next.js compatibility
-├── public/                    # Static files
-│   └── images/                # Product images
+│   ├── app/                   # Next.js App Router
+│   │   ├── admin/             # Admin Dashboard & CRUD
+│   │   ├── api/               # API Routes (Products, Uploads)
+│   │   └── product/           # Public Product Pages
+│   ├── backend/               # Server-side logic & Database
+│   │   ├── lib/               # Prisma & Product Actions
+│   │   └── types/             # Backend Type Definitions
+│   ├── frontend/              # Shared Frontend Logic
+│   │   ├── components/        # UI Components & Tests
+│   │   ├── theme/             # MUI Theme & Design System
+│   │   └── utils/             # Formatters & Helpers
+│   └── config/                # Centralized Config
+│       └── siteContent.json   # UI Text Customization
+├── public/                    # Static Assets
+└── tests/                     # Jest Configuration & Setup
 └── Configuration files
 ```
 
@@ -137,13 +128,32 @@ Each product detail page features an interactive gallery with:
 - Improved spacing between thumbnails (gap-4)
 - Smooth transitions and hover effects
 
-### Price Formatting
+### Text Customization (JSON)
 
-All prices are displayed using Argentinian locale formatting:
+You can change almost any text on the landing page without touching the code. Edit `src/config/siteContent.json`:
 
-- Format: `$ 1.299` (dot as thousands separator)
-- Implemented via `Intl.NumberFormat` with `es-AR` locale
-- Consistent across all components (cards, detail pages, WhatsApp messages)
+```json
+{
+  "hero": {
+    "title": "Phone Sale",
+    "subtitle": "Los Mejores iPhones",
+    "description": "..."
+  },
+  "location": {
+    "address": "Vedia 2186, Pilar...",
+    "hours": "Lunes a Viernes..."
+  }
+}
+```
+
+### Admin Dashboard Features
+
+Access `/admin/dashboard` to:
+- Create, Edit, and Delete products.
+- Upload images directly to Cloudinary.
+- Manage "Featured" status to update the home carousel.
+- Real-time price formatting (USD/ARS).
+- Optimized mobile experience with Sticky Action Bars.
 
 ## Customization
 

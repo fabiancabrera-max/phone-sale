@@ -1,4 +1,4 @@
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container, Typography, Paper } from '@mui/material';
 import ProductCarousel from '@/frontend/components/ProductCarousel';
 import ProductCard from '@/frontend/components/ProductCard';
 import DebugLogger from '@/frontend/components/DebugLogger';
@@ -6,7 +6,8 @@ import DebugLogger from '@/frontend/components/DebugLogger';
 import { getFeaturedProducts, getProducts } from '@/backend/lib/products';
 import { Product as BackendProduct } from '@/backend/types';
 import { Product as FrontendProduct } from '@/frontend/types/product';
-import { Smartphone } from '@mui/icons-material';
+import { Smartphone, LocationOn } from '@mui/icons-material';
+import siteContent from '@/config/siteContent.json';
 
 const serializeProduct = (product: BackendProduct): FrontendProduct => ({
   id: product.id,
@@ -57,7 +58,7 @@ export default async function Home() {
                 textShadow: '0 2px 4px rgba(0,0,0,0.2)',
               }}
             >
-              Phone Sale
+              {siteContent.hero.title}
             </Typography>
             <Typography
               variant="h5"
@@ -67,7 +68,7 @@ export default async function Home() {
                 opacity: 0.95,
               }}
             >
-              Los Mejores iPhones al Mejor Precio
+              {siteContent.hero.subtitle}
             </Typography>
             <Typography
               variant="body1"
@@ -77,8 +78,7 @@ export default async function Home() {
                 margin: '0 auto',
               }}
             >
-              Encuentra el iPhone perfecto para ti. Garantía incluida y envío
-              gratis.
+              {siteContent.hero.description}
             </Typography>
           </Box>
         </Container>
@@ -103,15 +103,14 @@ export default async function Home() {
               className="font-bold mb-3 text-slate-900 tracking-tight"
               sx={{ fontSize: { xs: '2rem', md: '3rem' } }}
             >
-              Productos Destacados
+              {siteContent.featured.title}
             </Typography>
             <Typography
               variant="body1"
               className="max-w-2xl mx-auto text-slate-600"
               sx={{ fontSize: { xs: '1rem', md: '1.125rem' } }}
             >
-              Descubre nuestra selección premium de iPhones con las mejores
-              características y precios
+              {siteContent.featured.description}
             </Typography>
           </Box>
 
@@ -128,14 +127,14 @@ export default async function Home() {
               className="font-bold mb-3 text-slate-900 tracking-tight"
               sx={{ fontSize: { xs: '2rem', md: '3rem' } }}
             >
-              Todos los Modelos
+              {siteContent.catalog.title}
             </Typography>
             <Typography
               variant="body1"
               className="max-w-2xl mx-auto text-slate-600"
               sx={{ fontSize: { xs: '1rem', md: '1.125rem' } }}
             >
-              Explora nuestro catálogo completo de dispositivos disponibles
+              {siteContent.catalog.description}
             </Typography>
           </Box>
 
@@ -158,7 +157,7 @@ export default async function Home() {
           ) : (
             <Box className="text-center py-12">
               <Typography variant="body1" color="text.secondary">
-                No hay productos disponibles por el momento.
+                {siteContent.catalog.emptyMessage}
               </Typography>
             </Box>
           )}
@@ -169,23 +168,7 @@ export default async function Home() {
       <Box className="bg-white py-16">
         <Container maxWidth="lg">
           <Box className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: 'Garantía Incluida',
-                description: 'Todos nuestros productos cuentan con garantía',
-                icon: '✓',
-              },
-              {
-                title: 'Envío Gratis',
-                description: 'Envío sin costo a todo el país',
-                icon: '🚚',
-              },
-              {
-                title: 'Atención Personalizada',
-                description: 'Te asesoramos para encontrar tu iPhone ideal',
-                icon: '💬',
-              },
-            ].map((feature, index) => (
+            {siteContent.features.map((feature, index) => (
               <Box
                 key={index}
                 className="text-center p-6 rounded-2xl bg-gradient-to-br from-gray-50 to-white border border-gray-200 hover:shadow-lg transition-shadow"
@@ -205,11 +188,64 @@ export default async function Home() {
         </Container>
       </Box>
 
+      {/* Location Section */}
+      <Box className="bg-slate-50 py-16 border-t border-slate-100">
+        <Container maxWidth="lg">
+          <Box className="mb-12 text-center">
+            <Box className="flex justify-center mb-4">
+              <Box className="bg-blue-100 p-2 rounded-full text-blue-600">
+                <LocationOn fontSize="large" />
+              </Box>
+            </Box>
+            <Typography
+              variant="h2"
+              className="font-bold mb-3 text-slate-900 tracking-tight"
+              sx={{ fontSize: { xs: '2rem', md: '3rem' } }}
+            >
+              {siteContent.location.title}
+            </Typography>
+            <Typography
+              variant="body1"
+              className="max-w-2xl mx-auto text-slate-600"
+              sx={{ fontSize: { xs: '1rem', md: '1.125rem' } }}
+            >
+              {siteContent.location.description}
+            </Typography>
+          </Box>
+
+          <Paper
+            elevation={0}
+            className="overflow-hidden rounded-[2.5rem] border border-slate-200 shadow-2xl shadow-slate-200/50"
+            sx={{ height: { xs: '350px', md: '500px' } }}
+          >
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3818.7606148174355!2d-58.94528140553753!3d-34.4511576163921!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bc82dde9978f61%3A0xa8257ac1a2acd81c!2sVedia%202186%2C%20B1629AYB%20Pilar%2C%20Provincia%20de%20Buenos%20Aires!5e0!3m2!1ses-419!2sar!4v1766773251394!5m2!1ses-419!2sar"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen={true}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Ubicación Phone Sale"
+            />
+          </Paper>
+
+          <Box className="mt-8 text-center text-slate-500">
+            <Typography variant="body1" className="font-semibold">
+              {siteContent.location.address}
+            </Typography>
+            <Typography variant="body2" className="mt-1">
+              {siteContent.location.hours}
+            </Typography>
+          </Box>
+        </Container>
+      </Box>
+
       {/* Footer */}
       <Box className="bg-gray-900 text-white py-8">
         <Container maxWidth="lg">
           <Typography variant="body2" className="text-center opacity-80">
-            © 2024 Phone Sale. Todos los derechos reservados.
+            {siteContent.footer.copy}
           </Typography>
         </Container>
       </Box>
