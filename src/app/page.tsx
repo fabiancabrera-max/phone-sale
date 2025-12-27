@@ -1,43 +1,47 @@
-import { Box, Container, Typography, Paper } from '@mui/material';
+'use client';
+
+import { Box, Container, Typography, Paper, CircularProgress } from '@mui/material';
+import React, { useState, useEffect } from 'react';
 import ProductCarousel from '@/frontend/components/ProductCarousel';
 import ProductCard from '@/frontend/components/ProductCard';
 import DebugLogger from '@/frontend/components/DebugLogger';
 
-import { getFeaturedProducts, getProducts } from '@/backend/lib/products';
-import { Product as BackendProduct } from '@/backend/types';
 import { Product as FrontendProduct } from '@/frontend/types/product';
 import { Smartphone, LocationOn } from '@mui/icons-material';
 import siteContent from '@/config/siteContent.json';
 
-const serializeProduct = (product: BackendProduct): FrontendProduct => ({
-  id: product.id,
-  title: product.title,
-  description: product.description,
-  price: product.price,
-  images: product.images,
-  status: product.status,
-  specs: product.specs,
-});
+export default function Home() {
+  const [featuredProducts, setFeaturedProducts] = useState<FrontendProduct[]>([]);
+  const [allProducts, setAllProducts] = useState<FrontendProduct[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export const dynamic = 'force-dynamic';
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        // Fetch featured products
+        const featuredRes = await fetch('/api/products?status=featured&limit=10');
+        const featuredJson = await featuredRes.json();
 
-export default async function Home() {
-  let featuredProducts: FrontendProduct[] = [];
-  let allProducts: FrontendProduct[] = [];
+        // Fetch all products (on sale)
+        const allRes = await fetch('/api/products?status=on_sale&limit=100');
+        const allJson = await allRes.json();
 
-  try {
-    // Fetch real data from Backend
-    const rawFeatured = await getFeaturedProducts().catch(() => []);
-    const { items: rawProducts } = await getProducts(100).catch(() => ({
-      items: [],
-    }));
+        if (featuredJson.success) {
+          setFeaturedProducts(featuredJson.data.items);
+        }
+        if (allJson.success) {
+          setAllProducts(allJson.data.items);
+        }
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    featuredProducts = (rawFeatured || []).map(serializeProduct);
-    allProducts = (rawProducts || []).map(serializeProduct);
-  } catch (error) {
-    console.error('Error fetching products for Home:', error);
-    // Fallback to empty arrays so the build continues
-  }
+    fetchData();
+  }, []);
 
   return (
     <Box className="min-h-screen bg-slate-50">
@@ -106,75 +110,83 @@ export default async function Home() {
         />
       </Box>
 
-      {/* Featured Products Carousel */}
-      {featuredProducts.length > 0 && (
-        <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 } }}>
-          <Box className="mb-8 text-center">
-            <Typography
-              variant="h2"
-              className="font-bold mb-3 text-slate-900 tracking-tight"
-              sx={{ fontSize: { xs: '2rem', md: '3rem' } }}
-            >
-              {siteContent.featured.title}
-            </Typography>
-            <Typography
-              variant="body1"
-              className="max-w-2xl mx-auto text-slate-600"
-              sx={{ fontSize: { xs: '1rem', md: '1.125rem' } }}
-            >
-              {siteContent.featured.description}
-            </Typography>
-          </Box>
+      {loading ? (
+        <Box className="flex justify-center items-center py-20">
+          <CircularProgress />
+        </Box>
+      ) : (
+        <>
+          {/* Featured Products Carousel */}
+          {featuredProducts.length > 0 && (
+            <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 } }}>
+              <Box className="mb-8 text-center">
+                <Typography
+                  variant="h2"
+                  className="font-bold mb-3 text-slate-900 tracking-tight"
+                  sx={{ fontSize: { xs: '2rem', md: '3rem' } }}
+                >
+                  {siteContent.featured.title}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  className="max-w-2xl mx-auto text-slate-600"
+                  sx={{ fontSize: { xs: '1rem', md: '1.125rem' } }}
+                >
+                  {siteContent.featured.description}
+                </Typography>
+              </Box>
 
-          <ProductCarousel products={featuredProducts} />
-        </Container>
-      )}
-
-      {/* All Products Grid */}
-      <Box className="bg-white py-16 border-t border-slate-100">
-        <Container maxWidth="lg">
-          <Box className="mb-12 text-center">
-            <Typography
-              variant="h2"
-              className="font-bold mb-3 text-slate-900 tracking-tight"
-              sx={{ fontSize: { xs: '2rem', md: '3rem' } }}
-            >
-              {siteContent.catalog.title}
-            </Typography>
-            <Typography
-              variant="body1"
-              className="max-w-2xl mx-auto text-slate-600"
-              sx={{ fontSize: { xs: '1rem', md: '1.125rem' } }}
-            >
-              {siteContent.catalog.description}
-            </Typography>
-          </Box>
-
-          {allProducts.length > 0 ? (
-            <Box
-              className="grid gap-6"
-              sx={{
-                gridTemplateColumns: {
-                  xs: '1fr',
-                  sm: 'repeat(2, 1fr)',
-                  md: 'repeat(3, 1fr)',
-                  lg: 'repeat(4, 1fr)',
-                },
-              }}
-            >
-              {allProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </Box>
-          ) : (
-            <Box className="text-center py-12">
-              <Typography variant="body1" color="text.secondary">
-                {siteContent.catalog.emptyMessage}
-              </Typography>
-            </Box>
+              <ProductCarousel products={featuredProducts} />
+            </Container>
           )}
-        </Container>
-      </Box>
+
+          {/* All Products Grid */}
+          <Box className="bg-white py-16 border-t border-slate-100">
+            <Container maxWidth="lg">
+              <Box className="mb-12 text-center">
+                <Typography
+                  variant="h2"
+                  className="font-bold mb-3 text-slate-900 tracking-tight"
+                  sx={{ fontSize: { xs: '2rem', md: '3rem' } }}
+                >
+                  {siteContent.catalog.title}
+                </Typography>
+                <Typography
+                  variant="body1"
+                  className="max-w-2xl mx-auto text-slate-600"
+                  sx={{ fontSize: { xs: '1rem', md: '1.125rem' } }}
+                >
+                  {siteContent.catalog.description}
+                </Typography>
+              </Box>
+
+              {allProducts.length > 0 ? (
+                <Box
+                  className="grid gap-6"
+                  sx={{
+                    gridTemplateColumns: {
+                      xs: '1fr',
+                      sm: 'repeat(2, 1fr)',
+                      md: 'repeat(3, 1fr)',
+                      lg: 'repeat(4, 1fr)',
+                    },
+                  }}
+                >
+                  {allProducts.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
+                </Box>
+              ) : (
+                <Box className="text-center py-12">
+                  <Typography variant="body1" color="text.secondary">
+                    {siteContent.catalog.emptyMessage}
+                  </Typography>
+                </Box>
+              )}
+            </Container>
+          </Box>
+        </>
+      )}
 
       {/* Features Section */}
       <Box className="bg-white py-16">
