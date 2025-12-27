@@ -15,26 +15,21 @@ class FirebaseAdmin {
   private _auth: Auth | null = null;
 
   private constructor() {
-    // Check if Firebase Admin is already initialized
     const apps = getApps();
 
     if (apps.length > 0) {
       this.app = apps[0];
     } else {
-      // Initialize Firebase Admin with service account
-      const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(
-        /\\n/g,
-        '\n'
-      );
+      const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
 
-      if (
-        !process.env.FIREBASE_PROJECT_ID ||
-        !process.env.FIREBASE_CLIENT_EMAIL ||
-        !privateKey
-      ) {
-        throw new Error(
-          'Missing Firebase Admin credentials. Please set FIREBASE_PROJECT_ID, FIREBASE_CLIENT_EMAIL, and FIREBASE_PRIVATE_KEY environment variables.'
-        );
+      if (!process.env.FIREBASE_PROJECT_ID || !process.env.FIREBASE_CLIENT_EMAIL || !privateKey) {
+        // Warning instead of error during build phase
+        if (process.env.NODE_ENV === 'production' && !process.env.NETLIFY) {
+          throw new Error('Missing Firebase Admin credentials.');
+        }
+        console.warn('Firebase Admin credentials missing - this is expected during build if not provided.');
+        this.app = null as any;
+        return;
       }
 
       this.app = initializeApp({
@@ -48,9 +43,6 @@ class FirebaseAdmin {
     }
   }
 
-  /**
-   * Get singleton instance
-   */
   public static getInstance(): FirebaseAdmin {
     if (!FirebaseAdmin.instance) {
       FirebaseAdmin.instance = new FirebaseAdmin();
@@ -58,42 +50,27 @@ class FirebaseAdmin {
     return FirebaseAdmin.instance;
   }
 
-  /**
-   * Get Firestore instance
-   */
   public get firestore(): Firestore {
-    if (!this._firestore) {
-      this._firestore = getFirestore(this.app);
-    }
+    if (!this.app) throw new Error('Firebase Admin not initialized');
+    if (!this._firestore) this._firestore = getFirestore(this.app);
     return this._firestore;
   }
 
-  /**
-   * Get Storage instance
-   */
   public get storage(): Storage {
-    if (!this._storage) {
-      this._storage = getStorage(this.app);
-    }
+    if (!this.app) throw new Error('Firebase Admin not initialized');
+    if (!this._storage) this._storage = getStorage(this.app);
     return this._storage;
   }
 
-  /**
-   * Get Auth instance
-   */
   public get auth(): Auth {
-    if (!this._auth) {
-      this._auth = getAuth(this.app);
-    }
+    if (!this.app) throw new Error('Firebase Admin not initialized');
+    if (!this._auth) this._auth = getAuth(this.app);
     return this._auth;
   }
 }
 
-// Export singleton instances
 const adminInstance = FirebaseAdmin.getInstance();
-
 export const adminAuth = adminInstance.auth;
 export const adminDb = adminInstance.firestore;
 export const adminStorage = adminInstance.storage;
-
 export default adminInstance;

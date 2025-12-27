@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Box, Container, Typography, Button } from '@mui/material';
 
 export default function Error({
@@ -11,7 +11,6 @@ export default function Error({
     reset: () => void;
 }) {
     useEffect(() => {
-        // Log the error to an error reporting service
         console.error(error);
     }, [error]);
 
@@ -22,7 +21,7 @@ export default function Error({
                     ¡Ups! Algo salió mal
                 </Typography>
                 <Typography variant="body1" className="text-slate-600 mb-8">
-                    Ha ocurrido un error inesperado al procesar tu solicitud. No te preocupes, estamos trabajando para solucionarlo.
+                    Ha ocurrido un error inesperado. No te preocupes, estamos trabajando para solucionarlo.
                 </Typography>
                 <Box className="flex justify-center gap-4">
                     <Button
