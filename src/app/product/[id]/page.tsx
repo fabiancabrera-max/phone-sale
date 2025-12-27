@@ -1,3 +1,6 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Container,
@@ -6,25 +9,15 @@ import {
   Breadcrumbs,
   Link,
   Paper,
+  CircularProgress,
 } from '@mui/material';
 import { Home } from '@mui/icons-material';
+import { useParams } from 'next/navigation';
 import ImageGallery from '@/frontend/components/ImageGallery';
 import ContactButtons from '@/frontend/components/ContactButtons';
 import BackButton from '@/frontend/components/BackButton';
-import { getProductById } from '@/backend/lib/products';
 import { formatPrice } from '@/frontend/utils/formatters';
-import { Product as BackendProduct } from '@/backend/types';
 import { Product as FrontendProduct } from '@/frontend/types/product';
-
-const serializeProduct = (product: BackendProduct): FrontendProduct => ({
-  id: product.id,
-  title: product.title,
-  description: product.description,
-  price: product.price,
-  images: product.images,
-  status: product.status,
-  specs: product.specs,
-});
 
 const CONDITION_LABELS: Record<string, string> = {
   new: 'Nuevo',
@@ -33,19 +26,42 @@ const CONDITION_LABELS: Record<string, string> = {
   refurbished: 'Reparado / Refurbished',
 };
 
-export default async function ProductDetail(props: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await props.params;
-  let backendProduct = null;
+export default function ProductDetail() {
+  const params = useParams();
+  const id = params.id as string;
+  const [product, setProduct] = useState<FrontendProduct | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  try {
-    backendProduct = await getProductById(id);
-  } catch (error) {
-    console.error(`Error fetching product ${id}:`, error);
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`/api/products/${id}`);
+        const result = await response.json();
+        if (result.success) {
+          setProduct(result.data);
+        }
+      } catch (error) {
+        console.error('Error fetching product:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (id) {
+      fetchProduct();
+    }
+  }, [id]);
+
+  if (loading) {
+    return (
+      <Box className="min-h-screen flex items-center justify-center">
+        <CircularProgress />
+      </Box>
+    );
   }
 
-  if (!backendProduct) {
+  if (!product) {
     return (
       <Container maxWidth="lg" className="py-16 text-center">
         <Typography variant="h4" className="mb-4">
@@ -58,8 +74,6 @@ export default async function ProductDetail(props: {
     );
   }
 
-  const product = serializeProduct(backendProduct);
-
   return (
     <Box className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
       <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8 } }}>
@@ -69,6 +83,7 @@ export default async function ProductDetail(props: {
             <Link
               href="/"
               className="flex items-center gap-1 text-gray-600 hover:text-slate-900 transition-colors"
+              sx={{ textDecoration: 'none' }}
             >
               <Home fontSize="small" />
               Inicio
