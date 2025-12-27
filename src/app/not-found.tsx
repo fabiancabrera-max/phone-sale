@@ -1,30 +1,16 @@
 import Link from 'next/link';
-import { Box, Container, Typography, Button } from '@mui/material';
 
 export default function NotFound() {
     return (
-        <Box className="min-h-screen flex items-center justify-center bg-slate-50">
-            <Container maxWidth="sm" className="text-center">
-                <Typography variant="h1" className="font-bold text-slate-800 mb-4" sx={{ fontSize: '6rem' }}>
-                    404
-                </Typography>
-                <Typography variant="h4" className="font-bold text-slate-900 mb-6">
-                    Página no encontrada
-                </Typography>
-                <Typography variant="body1" className="text-slate-600 mb-8">
-                    Lo sentimos, el modelo que estás buscando no parece estar disponible o la dirección es incorrecta.
-                </Typography>
-                <Link href="/" passHref style={{ textDecoration: 'none' }}>
-                    <Button
-                        variant="contained"
-                        size="large"
-                        className="bg-blue-600 hover:bg-blue-700 rounded-xl px-8 py-3"
-                        sx={{ textTransform: 'none', fontWeight: 'bold' }}
-                    >
-                        Volver al inicio
-                    </Button>
+        <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'sans-serif' }}>
+            <div style={{ textAlign: 'center' }}>
+                <h1 style={{ fontSize: '6rem', margin: 0 }}>404</h1>
+                <h2>Página no encontrada</h2>
+                <p>Lo sentimos, no pudimos encontrar lo que buscabas.</p>
+                <Link href="/" style={{ padding: '10px 20px', background: '#2563eb', color: 'white', textDecoration: 'none', borderRadius: '8px' }}>
+                    Volver al inicio
                 </Link>
-            </Container>
-        </Box>
+            </div>
+        </div>
     );
 }

@@ -19,6 +19,8 @@ const serializeProduct = (product: BackendProduct): FrontendProduct => ({
   specs: product.specs,
 });
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   let featuredProducts: FrontendProduct[] = [];
   let allProducts: FrontendProduct[] = [];
