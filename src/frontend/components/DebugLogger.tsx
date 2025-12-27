@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 
 interface DebugLoggerProps {
-  data: any;
+  data: unknown;
   label?: string;
 }
 

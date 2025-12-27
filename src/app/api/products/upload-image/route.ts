@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
     const publicUrl = await uploadImageToStorage(file, storagePath);
 
     // Save metadata to Firestore
-    const metadata = await saveImageMetadata(
+    await saveImageMetadata(
       userId,
       publicUrl,
       storagePath,

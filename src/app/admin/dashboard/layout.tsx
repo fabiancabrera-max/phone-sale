@@ -11,9 +11,8 @@ import {
   Box,
   Container,
   CircularProgress,
-  IconButton,
 } from '@mui/material';
-import { Logout, Add, Dashboard as DashboardIcon } from '@mui/icons-material';
+import { Logout, Dashboard as DashboardIcon } from '@mui/icons-material';
 import Link from 'next/link';
 
 export default function DashboardLayout({

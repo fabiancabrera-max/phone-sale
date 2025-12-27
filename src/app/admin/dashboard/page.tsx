@@ -20,21 +20,12 @@ import {
   Avatar,
   Tooltip,
   CircularProgress,
-  Alert,
   useTheme,
   useMediaQuery,
   Fab,
   Grid2 as Grid,
 } from '@mui/material';
-import {
-  Add,
-  Edit,
-  Delete,
-  Refresh,
-  Star,
-  CheckCircle,
-  Block,
-} from '@mui/icons-material';
+import { Add, Edit, Delete, Refresh, Star } from '@mui/icons-material';
 import { formatPrice } from '@/frontend/utils/formatters';
 
 const STATUS_CONFIG: Record<
@@ -69,13 +60,13 @@ export default function DashboardPage() {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [, setFetchError] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
-      setError(null);
+      setFetchError(null);
 
       const token = await getToken();
       if (!token) return;
@@ -95,9 +86,9 @@ export default function DashboardPage() {
       if (result.success) {
         setProducts(result.data.items);
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setError(err.message || 'Error desconocido');
+      setFetchError(err instanceof Error ? err.message : 'Error desconocido');
     } finally {
       setLoading(false);
     }
@@ -132,7 +123,8 @@ export default function DashboardPage() {
 
       // Optimistic update
       setProducts((prev) => prev.filter((p) => p.id !== id));
-    } catch (err) {
+    } catch (err: unknown) {
+      console.error(err);
       alert('Error al eliminar el producto');
     } finally {
       setDeletingId(null);
