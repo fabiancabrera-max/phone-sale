@@ -1,6 +1,12 @@
 'use client';
 
-import { Box, Container, Typography, Paper, CircularProgress } from '@mui/material';
+import {
+  Box,
+  Container,
+  Typography,
+  Paper,
+  CircularProgress,
+} from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import ProductCarousel from '@/frontend/components/ProductCarousel';
 import ProductCard from '@/frontend/components/ProductCard';
@@ -11,7 +17,9 @@ import { Smartphone, LocationOn } from '@mui/icons-material';
 import siteContent from '@/config/siteContent.json';
 
 export default function Home() {
-  const [featuredProducts, setFeaturedProducts] = useState<FrontendProduct[]>([]);
+  const [featuredProducts, setFeaturedProducts] = useState<FrontendProduct[]>(
+    []
+  );
   const [allProducts, setAllProducts] = useState<FrontendProduct[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,7 +28,9 @@ export default function Home() {
       try {
         setLoading(true);
         // Fetch featured products
-        const featuredRes = await fetch('/api/products?status=featured&limit=10');
+        const featuredRes = await fetch(
+          '/api/products?status=featured&limit=10'
+        );
         const featuredJson = await featuredRes.json();
 
         // Fetch all products (on sale)

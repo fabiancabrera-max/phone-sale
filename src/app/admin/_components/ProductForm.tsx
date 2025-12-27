@@ -16,20 +16,14 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material';
-import {
-  CloudUpload,
-  Delete,
-  Save,
-  ArrowBack,
-  Image as ImageIcon,
-} from '@mui/icons-material';
+import { CloudUpload, Delete, Save, ArrowBack } from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/frontend/context/AuthContext';
-import { Product, ProductStatus } from '@/frontend/types/product';
+import { Product } from '@/frontend/types/product';
 
 interface ProductFormProps {
   initialData?: Product;
-  onSubmit: (data: any) => Promise<void>;
+  onSubmit: (data: Record<string, unknown>) => Promise<void>;
   title: string;
 }
 
@@ -137,8 +131,10 @@ export default function ProductForm({
       }
 
       setImages((prev) => [...prev, ...uploadedUrls]);
-    } catch (err: any) {
-      setError(err.message || 'Error al subir las imágenes');
+    } catch (err: unknown) {
+      setError(
+        err instanceof Error ? err.message : 'Error al subir las imágenes'
+      );
     } finally {
       setUploading(false);
       // Reset input value to allow uploading same file again
@@ -171,9 +167,11 @@ export default function ProductForm({
       };
 
       await onSubmit(payload);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
-      setError(err.message || 'Error al guardar el producto');
+      setError(
+        err instanceof Error ? err.message : 'Error al guardar el producto'
+      );
     } finally {
       setSubmitting(false);
     }

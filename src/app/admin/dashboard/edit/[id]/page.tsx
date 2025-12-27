@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { useAuth } from '../../../../../frontend/context/AuthContext';
-import ProductForm from '../../../_components/ProductForm';
+import { useAuth } from '@/frontend/context/AuthContext';
+import ProductForm from '@/app/admin/_components/ProductForm';
 import { Product } from '@/frontend/types/product';
 import { Box, CircularProgress, Alert } from '@mui/material';
 
@@ -32,8 +32,8 @@ export default function EditProductPage() {
 
         const result = await response.json();
         setProduct(result.data);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        setError(err instanceof Error ? err.message : 'Error desconocido');
       } finally {
         setLoading(false);
       }
@@ -44,7 +44,7 @@ export default function EditProductPage() {
     }
   }, [productId, getToken]);
 
-  const handleUpdate = async (data: any) => {
+  const handleUpdate = async (data: Record<string, unknown>) => {
     const token = await getToken();
     const response = await fetch(`/api/products/${productId}`, {
       method: 'PUT',

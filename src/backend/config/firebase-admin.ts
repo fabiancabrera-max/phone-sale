@@ -9,7 +9,7 @@ import { getAuth, Auth } from 'firebase-admin/auth';
  */
 class FirebaseAdmin {
   private static instance: FirebaseAdmin;
-  private app: App;
+  private app: App | null = null;
   private _firestore: Firestore | null = null;
   private _storage: Storage | null = null;
   private _auth: Auth | null = null;
@@ -20,15 +20,24 @@ class FirebaseAdmin {
     if (apps.length > 0) {
       this.app = apps[0];
     } else {
-      const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+      const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(
+        /\\n/g,
+        '\n'
+      );
 
-      if (!process.env.FIREBASE_PROJECT_ID || !process.env.FIREBASE_CLIENT_EMAIL || !privateKey) {
+      if (
+        !process.env.FIREBASE_PROJECT_ID ||
+        !process.env.FIREBASE_CLIENT_EMAIL ||
+        !privateKey
+      ) {
         // Warning instead of error during build phase
         if (process.env.NODE_ENV === 'production' && !process.env.NETLIFY) {
           throw new Error('Missing Firebase Admin credentials.');
         }
-        console.warn('Firebase Admin credentials missing - this is expected during build if not provided.');
-        this.app = null as any;
+        console.warn(
+          'Firebase Admin credentials missing - this is expected during build if not provided.'
+        );
+        this.app = null;
         return;
       }
 

@@ -51,18 +51,20 @@ export default function AdminLoginPage() {
       await signInWithEmailAndPassword(auth, email, password);
       // Login exitoso, redirigir al dashboard
       router.push('/admin/dashboard');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Login error:', err);
       let errorMessage = 'Error al iniciar sesión.';
 
+      const authError = err as { code?: string };
+
       if (
-        err.code === 'auth/invalid-credential' ||
-        err.code === 'auth/user-not-found' ||
-        err.code === 'auth/wrong-password'
+        authError.code === 'auth/invalid-credential' ||
+        authError.code === 'auth/user-not-found' ||
+        authError.code === 'auth/wrong-password'
       ) {
         errorMessage =
           'Credenciales incorrectas. Verifica tu email y contraseña.';
-      } else if (err.code === 'auth/too-many-requests') {
+      } else if (authError.code === 'auth/too-many-requests') {
         errorMessage = 'Demasiados intentos fallidos. Intenta más tarde.';
       }
 

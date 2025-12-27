@@ -9,6 +9,8 @@ import {
   Typography,
   Box,
   Chip,
+  SxProps,
+  Theme,
 } from '@mui/material';
 import Link from 'next/link';
 import { formatPrice } from '@/frontend/utils/formatters';
@@ -17,7 +19,7 @@ interface ProductCardProps {
   product: Product;
 }
 
-const STATUS_CONFIG: Record<string, { label: string; sx?: any }> = {
+const STATUS_CONFIG: Record<string, { label: string; sx?: SxProps<Theme> }> = {
   featured: {
     label: 'Destacado',
     sx: {

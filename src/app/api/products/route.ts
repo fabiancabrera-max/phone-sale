@@ -93,12 +93,16 @@ export async function POST(request: NextRequest) {
     const userId = decodedToken.uid;
 
     // Parse and validate body
-    const body = (await parseJsonBody(request)) as Record<string, any>;
+    const body = (await parseJsonBody(request)) as Record<string, unknown>;
     const { id, ...input } = body;
     const validatedInput = validateCreateProduct(input);
 
     // Create product
-    const product = await createProduct(validatedInput, userId, id);
+    const product = await createProduct(
+      validatedInput,
+      userId,
+      id as string | undefined
+    );
 
     return successResponse(
       {
