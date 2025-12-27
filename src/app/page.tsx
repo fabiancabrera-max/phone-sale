@@ -20,12 +20,22 @@ const serializeProduct = (product: BackendProduct): FrontendProduct => ({
 });
 
 export default async function Home() {
-  // Fetch real data from Backend
-  const rawFeatured = await getFeaturedProducts();
-  const { items: rawProducts } = await getProducts(100); // getProducts(100, undefined, 'on_sale');
+  let featuredProducts: FrontendProduct[] = [];
+  let allProducts: FrontendProduct[] = [];
 
-  const featuredProducts = rawFeatured.map(serializeProduct);
-  const allProducts = rawProducts.map(serializeProduct);
+  try {
+    // Fetch real data from Backend
+    const rawFeatured = await getFeaturedProducts().catch(() => []);
+    const { items: rawProducts } = await getProducts(100).catch(() => ({
+      items: [],
+    }));
+
+    featuredProducts = (rawFeatured || []).map(serializeProduct);
+    allProducts = (rawProducts || []).map(serializeProduct);
+  } catch (error) {
+    console.error('Error fetching products for Home:', error);
+    // Fallback to empty arrays so the build continues
+  }
 
   return (
     <Box className="min-h-screen bg-slate-50">

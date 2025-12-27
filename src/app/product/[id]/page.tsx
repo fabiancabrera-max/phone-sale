@@ -37,7 +37,13 @@ export default async function ProductDetail(props: {
   params: Promise<{ id: string }>;
 }) {
   const { id } = await props.params;
-  const backendProduct = await getProductById(id);
+  let backendProduct = null;
+
+  try {
+    backendProduct = await getProductById(id);
+  } catch (error) {
+    console.error(`Error fetching product ${id}:`, error);
+  }
 
   if (!backendProduct) {
     return (
