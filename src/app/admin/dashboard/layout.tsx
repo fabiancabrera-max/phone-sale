@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/frontend/context/AuthContext';
+import { useAuth } from '../../../frontend/context/AuthContext';
 import {
   AppBar,
   Toolbar,
