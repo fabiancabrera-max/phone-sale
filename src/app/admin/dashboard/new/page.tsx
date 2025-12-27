@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/frontend/context/AuthContext';
-import ProductForm from '@/app/admin/_components/ProductForm';
+import { useAuth } from '../../../../frontend/context/AuthContext';
+import ProductForm from '../../_components/ProductForm';
 
 export default function NewProductPage() {
   const router = useRouter();

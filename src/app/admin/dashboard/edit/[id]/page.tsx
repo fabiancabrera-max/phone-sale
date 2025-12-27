@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { useAuth } from '@/frontend/context/AuthContext';
-import ProductForm from '@/app/admin/_components/ProductForm';
+import { useAuth } from '../../../../../frontend/context/AuthContext';
+import ProductForm from '../../../_components/ProductForm';
 import { Product } from '@/frontend/types/product';
 import { Box, CircularProgress, Alert } from '@mui/material';
 
